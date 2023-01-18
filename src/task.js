@@ -1,4 +1,4 @@
-function task(title, description, date) {
+function task(title, description, date = "No date") {
   let favorite = false;
   let status = false;
   getTitle = function () {
@@ -18,6 +18,12 @@ function task(title, description, date) {
   };
   setDate = function (newDate) {
     date = newDate;
+  };
+  getDateFormatted = function () {
+    const day = date.split("/")[0];
+    const month = date.split("/")[1];
+    const year = date.split("/")[2];
+    return "${month}/${day}/${year}";
   };
   getFavorite = function () {
     return favorite;
@@ -39,6 +45,7 @@ function task(title, description, date) {
     setDescription,
     getDate,
     setDate,
+    getDateFormatted,
     getFavorite,
     toggleFavorite,
     getStatus,

@@ -1,3 +1,5 @@
+import { toDate, isToday, isThisWeek, subDays } from "date-fns";
+
 function project(title) {
   let tasks = [];
   getTitle = function () {
@@ -15,12 +17,35 @@ function project(title) {
   getTasks = function () {
     return tasks;
   };
+  setTasks = function (newTasks) {
+    tasks = newTasks;
+  };
+  contains = function (taskName) {
+    return tasks.some((task) => task.getTitle() === taskName);
+  };
+  getTasksToday = function () {
+    return tasks.filter((task) => {
+      const taskDate = new Date(task.getDateFormatted());
+      return isToday(toDate(taskDate));
+    });
+  };
+  getTasksThisWeek = function () {
+    return tasks.filter((task) => {
+      const taskDate = new Date(task.getDateFormatted());
+      return isThisWeek(subDays(toDate(taskDate), 1));
+    });
+  };
+
   return {
     getTitle,
     setTitle,
     addTask,
     deleteTask,
     getTasks,
+    setTasks,
+    contains,
+    getTasksToday,
+    getTasksThisWeek,
   };
 }
 
