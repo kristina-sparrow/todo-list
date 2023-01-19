@@ -5,50 +5,50 @@ function Task(
   favorite = false,
   status = false
 ) {
-  getTitle = function () {
+  getTitle = () => {
     return title;
   };
 
-  setTitle = function (newTitle) {
+  setTitle = (newTitle) => {
     title = newTitle;
   };
 
-  getDescription = function () {
+  getDescription = () => {
     return description;
   };
 
-  setDescription = function (newDescription) {
+  setDescription = (newDescription) => {
     description = newDescription;
   };
 
-  getDate = function () {
+  getDate = () => {
     return date;
   };
 
-  setDate = function (newDate) {
+  setDate = (newDate) => {
     date = newDate;
   };
 
-  getDateFormatted = function () {
+  getDateFormatted = () => {
     const day = date.split("/")[0];
     const month = date.split("/")[1];
     const year = date.split("/")[2];
     return "${month}/${day}/${year}";
   };
 
-  getFavorite = function () {
+  getFavorite = () => {
     return favorite;
   };
 
-  toggleFavorite = function () {
+  toggleFavorite = () => {
     favorite = favorite === "false" ? "true" : "false";
   };
 
-  getStatus = function () {
+  getStatus = () => {
     return status;
   };
 
-  toggleStatus = function () {
+  toggleStatus = () => {
     status = status === "false" ? "true" : "false";
   };
 

@@ -4,35 +4,35 @@ import { Task } from "./task";
 function todoList() {
   let projects = [Project("All"), Project("Today"), Project("This Week")];
 
-  setProjects = function (newProjects) {
+  setProjects = (newProjects) => {
     projects = newProjects;
   };
 
-  getProjects = function () {
+  getProjects = () => {
     return projects;
   };
 
-  getProject = function (projectName) {
+  getProject = (projectName) => {
     return projects.find((project) => project.getTitle() === projectName);
   };
 
-  contains = function (projectName) {
+  contains = (projectName) => {
     return projects.some((project) => project.getTitle() === projectName);
   };
 
-  addProject = function (newProject) {
+  addProject = (newProject) => {
     if (projects.find((project) => project.title === newProject.title)) return;
     projects.push(newProject);
   };
 
-  deleteProject = function (projectName) {
+  deleteProject = (projectName) => {
     const projectToDelete = projects.find(
       (project) => project.getTitle() === projectName
     );
     projects.splice(projects.indexOf(projectToDelete), 1);
   };
 
-  updateTodayProject = function () {
+  updateTodayProject = () => {
     this.getProject("Today").tasks = [];
     projects.forEach((project) => {
       if (project.getTitle() === "Today" || project.getTitle() === "This Week")
@@ -53,7 +53,7 @@ function todoList() {
     });
   };
 
-  updateWeekProject = function () {
+  updateWeekProject = () => {
     this.getProject("This Week").tasks = [];
     projects.forEach((project) => {
       if (project.getTitle() === "Today" || project.getTitle() === "This week")

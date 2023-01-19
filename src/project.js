@@ -3,42 +3,42 @@ import { toDate, isToday, isThisWeek, subDays } from "date-fns";
 function Project(title) {
   let tasks = [];
 
-  getTitle = function () {
+  getTitle = () => {
     return title;
   };
 
-  setTitle = function (newTitle) {
+  setTitle = (newTitle) => {
     title = newTitle;
   };
 
-  addTask = function (newTask) {
+  addTask = (newTask) => {
     tasks.push(newTask);
   };
 
-  deleteTask = function (taskToDelete) {
+  deleteTask = (taskToDelete) => {
     tasks = tasks.filter((task) => task !== taskToDelete);
   };
 
-  getTasks = function () {
+  getTasks = () => {
     return tasks;
   };
 
-  setTasks = function (newTasks) {
+  setTasks = (newTasks) => {
     tasks = newTasks;
   };
 
-  contains = function (taskName) {
+  contains = (taskName) => {
     return tasks.some((task) => task.getTitle() === taskName);
   };
 
-  getTasksToday = function () {
+  getTasksToday = () => {
     return tasks.filter((task) => {
       const taskDate = new Date(task.getDateFormatted());
       return isToday(toDate(taskDate));
     });
   };
 
-  getTasksThisWeek = function () {
+  getTasksThisWeek = () => {
     return tasks.filter((task) => {
       const taskDate = new Date(task.getDateFormatted());
       return isThisWeek(subDays(toDate(taskDate), 1));
