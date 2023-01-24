@@ -7,6 +7,7 @@
     <script
       src="https://kit.fontawesome.com/0f70dd3e5b.js"
       crossorigin="anonymous"
+      defer
     ></script>
     <title>WhatToDo</title>
   </head>
@@ -18,29 +19,26 @@
     <div class="main">
       <nav class="sidebar">
         <div class="top-links">
-          <button class="sidebar-link" id="all-button">
+          <button class="sidebar-link" id="button-all-project">
             <i class="fa-thin fa-calendar-lines"></i>All
           </button>
-          <button class="sidebar-link" id="today-button">
+          <button class="sidebar-link" id="button-today-project">
             <i class="fa-thin fa-calendar-day"></i>Today
           </button>
-          <button class="sidebar-link" id="week-button">
+          <button class="sidebar-link" id="button-week-project">
             <i class="fa-thin fa-calendar-week"></i>Week
-          </button>
-          <button class="sidebar-link" id="important-button">
-            <i class="fa-thin fa-calendar-star"></i>Important
           </button>
         </div>
         <div class="divider"></div>
         <h2>Projects</h2>
         <div id="project-list">
-          <button id="add-project-btn">
+          <button id="button-add-project">
             <i class="fa-thin fa-plus"></i>Add Project
           </button>
         </div>
       </nav>
       <div id="project-preview">
-        <h2 class="project-name"></h2>
+        <h2 class="project-title"></h2>
         <div class="tasks-list"></div>
         <button class="button-add-task">
           <i class="fa-thin fa-plus"></i>Add Task

@@ -1,10 +1,4 @@
-function Task(
-  title,
-  description,
-  date = "No date",
-  favorite = false,
-  status = false
-) {
+function Task(title, description, date = "No date", status = false) {
   getTitle = () => {
     return title;
   };
@@ -36,14 +30,6 @@ function Task(
     return "${month}/${day}/${year}";
   };
 
-  getFavorite = () => {
-    return favorite;
-  };
-
-  toggleFavorite = () => {
-    favorite = favorite === "false" ? "true" : "false";
-  };
-
   getStatus = () => {
     return status;
   };
@@ -60,8 +46,6 @@ function Task(
     getDate,
     setDate,
     getDateFormatted,
-    getFavorite,
-    toggleFavorite,
     getStatus,
     toggleStatus,
   };
