@@ -1,18 +1,19 @@
 import { format } from "date-fns";
-import { Storage } from "./storage";
-import { Project } from "./project";
-import { Task } from "./task";
+import Storage from "./storage";
+import Project from "./project";
+import Task from "./task";
 
-function UI() {
+export default class UI {
   // LOAD ELEMENTS
-  loadHomepage = () => {
+  static loadHomepage() {
     UI.loadProjects();
     UI.initProjectButtons();
     UI.openProject("All", document.getElementById("button-all-project"));
     document.addEventListener("keydown", UI.handleKeyboardInput);
-  };
+    console.log("Homepage loaded");
+  }
 
-  loadProjects = () => {
+  static loadProjects() {
     Storage.getTodoList()
       .getProjects()
       .forEach((project) => {
@@ -25,9 +26,9 @@ function UI() {
         }
       });
     UI.initAddProjectButtons();
-  };
+  }
 
-  loadTasks = (projectTitle) => {
+  static loadTasks(projectTitle) {
     Storage.getTodoList()
       .getProject(projectTitle)
       .getTasks()
@@ -37,9 +38,9 @@ function UI() {
     if (projectTitle !== "Today" && projectTitle !== "This Week") {
       UI.initAddTaskButtons();
     }
-  };
+  }
 
-  loadProjectContent = (projectTitle) => {
+  static loadProjectContent(projectTitle) {
     const projectPreview = document.getElementById("project-preview");
     projectPreview.innerHTML = `
         <h1 id="project-title">${projectTitle}</h1>
@@ -77,10 +78,10 @@ function UI() {
         </div>`;
     }
     UI.loadTasks(projectTitle);
-  };
+  }
 
   // CREATE ELEMENTS
-  createProject = (title) => {
+  static createProject(title) {
     const userProjects = document.getElementById("project-list");
     userProjects.innerHTML += ` 
       <button class="button-project" data-project-button>
@@ -93,9 +94,9 @@ function UI() {
         </div>
       </button>`;
     UI.initProjectButtons();
-  };
+  }
 
-  createTask = (title, description, dueDate) => {
+  static createTask(title, description, dueDate) {
     const tasksList = document.getElementById("tasks-list");
     tasksList.innerHTML += `
       <button class="button-task" data-task-button>
@@ -113,31 +114,31 @@ function UI() {
         </div>
       </button>`;
     UI.initTaskButtons();
-  };
+  }
 
   // CLEAR ELEMENTS
-  clear = () => {
+  static clear() {
     UI.clearProjectPreview();
     UI.clearProjects();
     UI.clearTasks();
-  };
+  }
 
-  clearProjectPreview = () => {
+  static clearProjectPreview() {
     const projectPreview = document.getElementById("project-preview");
     projectPreview.textContent = "";
-  };
+  }
 
-  clearProjects = () => {
+  static clearProjects() {
     const projectsList = document.getElementById("projects-list");
     projectsList.textContent = "";
-  };
+  }
 
-  clearTasks = () => {
+  static clearTasks() {
     const tasksList = document.getElementById("tasks-list");
     tasksList.textContent = "";
-  };
+  }
 
-  closeAllPopups = () => {
+  static closeAllPopups() {
     UI.closeAddProjectPopup();
     if (document.getElementById("button-add-task")) {
       UI.closeAddTaskPopup();
@@ -148,23 +149,23 @@ function UI() {
     ) {
       UI.closeAllInputs();
     }
-  };
+  }
 
-  closeAllInputs = () => {
+  static closeAllInputs() {
     const taskButtons = document.querySelectorAll("[data-task-button]");
     taskButtons.forEach((button) => {
       UI.closeRenameInput(button);
       UI.closeDescriptionInput(button);
       UI.closeSetDateInput(button);
     });
-  };
+  }
 
-  handleKeyboardInput = (e) => {
+  static handleKeyboardInput(e) {
     if (e.key === "Escape") UI.closeAllPopups();
-  };
+  }
 
   // ADD PROJECT EVENT LISTENERS
-  initAddProjectButtons = () => {
+  static initAddProjectButtons() {
     const addProjectButton = document.getElementById("button-add-project");
     const addProjectPopupButton = document.getElementById(
       "button-add-project-popup"
@@ -182,17 +183,17 @@ function UI() {
       "keypress",
       UI.handleAddProjectPopupInput
     );
-  };
+  }
 
-  openAddProjectPopup = () => {
+  static openAddProjectPopup() {
     const addProjectPopup = document.getElementById("add-project-popup");
     const addProjectButton = document.getElementById("button-add-project");
     UI.closeAllPopups();
     addProjectPopup.classList.add("active");
     addProjectButton.classList.add("active");
-  };
+  }
 
-  closeAddProjectPopup = () => {
+  static closeAddProjectPopup() {
     const addProjectPopup = document.getElementById("add-project-popup");
     const addProjectButton = document.getElementById("button-add-project");
     const addProjectPopupInput = document.getElementById(
@@ -201,9 +202,9 @@ function UI() {
     addProjectPopup.classList.remove("active");
     addProjectButton.classList.remove("active");
     addProjectPopupInput.value = "";
-  };
+  }
 
-  addProject = () => {
+  static addProject() {
     const addProjectPopupInput = document.getElementById(
       "input-add-project-popup"
     );
@@ -217,17 +218,17 @@ function UI() {
       alert("Project titles must be different");
       return;
     }
-    Storage.addProject(Project(projectTitle));
+    Storage.addProject(new Project(projectTitle));
     UI.createProject(projectTitle);
     UI.closeAddProjectPopup();
-  };
+  }
 
-  handleAddProjectPopupInput = (e) => {
+  static handleAddProjectPopupInput(e) {
     if (e.key === "Enter") UI.addProject();
-  };
+  }
 
   // PROJECT EVENT LISTENERS
-  initProjectButtons = () => {
+  static initProjectButtons() {
     const allProjectButton = document.getElementById("button-all-project");
     const todayProjectButton = document.getElementById("button-today-project");
     const weekProjectButton = document.getElementById("button-week-project");
@@ -238,32 +239,32 @@ function UI() {
     projectButtons.forEach((projectButton) =>
       projectButton.addEventListener("click", UI.handleProjectButton)
     );
-  };
+  }
 
-  openAllTasks = () => {
+  static openAllTasks() {
     UI.openProject("All", this);
-  };
+  }
 
-  openTodayTasks = () => {
+  static openTodayTasks() {
     Storage.updateTodayProject();
     UI.openProject("Today", this);
-  };
+  }
 
-  openWeekTasks = () => {
+  static openWeekTasks() {
     Storage.updateWeekProject();
     UI.openProject("This Week", this);
-  };
+  }
 
-  handleProjectButton = (e) => {
+  static handleProjectButton(e) {
     const projectTitle = this.children[0].children[1].textContent;
     if (e.target.classList.contains("fa-times")) {
       UI.deleteProject(projectTitle, this);
       return;
     }
     UI.openProject(projectTitle, this);
-  };
+  }
 
-  openProject = (projectTitle, projectButton) => {
+  static openProject(projectTitle, projectButton) {
     const defaultProjectButtons = document.querySelectorAll(
       ".button-default-project"
     );
@@ -273,17 +274,17 @@ function UI() {
     projectButton.classList.add("active");
     UI.closeAddProjectPopup();
     UI.loadProjectContent(projectTitle);
-  };
+  }
 
-  deleteProject = (projectTitle, button) => {
+  static deleteProject(projectTitle, button) {
     if (button.classList.contains("active")) UI.clearProjectPreview();
     Storage.deleteProject(projectTitle);
     UI.clearProjects();
     UI.loadProjects();
-  };
+  }
 
   // ADD TASK EVENT LISTENERS
-  initAddTaskButtons = () => {
+  static initAddTaskButtons() {
     const addTaskButton = document.getElementById("button-add-task");
     const addTaskPopupButton = document.getElementById("button-add-task-popup");
     const cancelTaskPopupButton = document.getElementById(
@@ -306,17 +307,17 @@ function UI() {
       "keypress",
       UI.handleAddTaskPopupInput
     );
-  };
+  }
 
-  openAddTaskPopup = () => {
+  static openAddTaskPopup() {
     const addTaskPopup = document.getElementById("add-task-popup");
     const addTaskButton = document.getElementById("button-add-task");
     UI.closeAllPopups();
     addTaskPopup.classList.add("active");
     addTaskButton.classList.add("active");
-  };
+  }
 
-  closeAddTaskPopup = () => {
+  static closeAddTaskPopup() {
     const addTaskPopup = document.getElementById("add-task-popup");
     const addTaskButton = document.getElementById("button-add-task");
     const addTaskTitleInput = document.getElementById(
@@ -329,9 +330,9 @@ function UI() {
     addTaskButton.classList.remove("active");
     addTaskTitleInput.value = "";
     addTaskDescriptionInput.value = "";
-  };
+  }
 
-  addTask = () => {
+  static addTask() {
     const projectTitle = document.getElementById("project-title").textContent;
     const addTaskTitlePopupInput = document.getElementById(
       "input-add-task-title-popup"
@@ -350,17 +351,20 @@ function UI() {
       addTaskTitlePopupInput.value = "";
       return;
     }
-    Storage.addTask(projectTitle, Task(taskTitle));
+    Storage.addTask(
+      projectTitle,
+      new Task(taskTitle, taskDescription, "No date")
+    );
     UI.createTask(taskTitle, taskDescription, "No date");
     UI.closeAddTaskPopup();
-  };
+  }
 
-  handleAddTaskPopupInput = (e) => {
+  static handleAddTaskPopupInput(e) {
     if (e.key === "Enter") UI.addTask();
-  };
+  }
 
   // TASK EVENT LISTENERS
-  initTaskButtons = () => {
+  static initTaskButtons() {
     const taskButtons = document.querySelectorAll("[data-task-button]");
     const taskTitleInputs = document.querySelectorAll(
       "[data-input-task-title]"
@@ -381,9 +385,9 @@ function UI() {
     dueDateInputs.forEach((dueDateInput) =>
       dueDateInput.addEventListener("change", UI.setTaskDate)
     );
-  };
+  }
 
-  handleTaskButton = (e) => {
+  static handleTaskButton(e) {
     if (e.target.classList.contains("fa-circle")) {
       UI.setTaskCompleted(this);
       return;
@@ -403,9 +407,9 @@ function UI() {
     if (e.target.classList.contains("due-date")) {
       UI.openSetDateInput(this);
     }
-  };
+  }
 
-  setTaskCompleted = (taskButton) => {
+  static setTaskCompleted(taskButton) {
     const projectTitle = document.getElementById("project-title").textContent;
     const taskTitle = taskButton.children[0].children[1].textContent;
     if (projectTitle === "Today" || projectTitle === "This Week") {
@@ -421,9 +425,9 @@ function UI() {
     }
     UI.clearTasks();
     UI.loadTasks(projectTitle);
-  };
+  }
 
-  deleteTask = (taskButton) => {
+  static deleteTask(taskButton) {
     const projectTitle = document.getElementById("project-title").textContent;
     const taskTitle = taskButton.children[0].children[1].textContent;
     if (projectTitle === "Today" || projectTitle === "This Week") {
@@ -433,9 +437,9 @@ function UI() {
     Storage.deleteTask(projectTitle, taskTitle);
     UI.clearTasks();
     UI.loadTasks(projectTitle);
-  };
+  }
 
-  openRenameInput = (taskButton) => {
+  static openRenameInput(taskButton) {
     const taskTitlePara = taskButton.children[0].children[1];
     let taskTitle = taskTitlePara.textContent;
     const taskTitleInput = taskButton.children[0].children[2];
@@ -448,17 +452,17 @@ function UI() {
     taskTitlePara.classList.add("active");
     taskTitleInput.classList.add("active");
     taskTitleInput.value = taskTitle;
-  };
+  }
 
-  closeRenameInput = (taskButton) => {
+  static closeRenameInput(taskButton) {
     const taskTitle = taskButton.children[0].children[1];
     const taskTitleInput = taskButton.children[0].children[2];
     taskTitle.classList.remove("active");
     taskTitleInput.classList.remove("active");
     taskTitleInput.value = "";
-  };
+  }
 
-  renameTask = (e) => {
+  static renameTask(e) {
     if (e.key !== "Enter") return;
     const projectTitle = document.getElementById("project-title").textContent;
     const taskTitle = this.previousElementSibling.textContent;
@@ -487,9 +491,9 @@ function UI() {
     UI.clearTasks();
     UI.loadTasks(projectTitle);
     UI.closeRenameInput(this.parentNode.parentNode);
-  };
+  }
 
-  openDescriptionInput = (taskButton) => {
+  static openDescriptionInput(taskButton) {
     const taskDescriptionPara = taskButton.children[0].children[3];
     let taskDescription = taskDescriptionPara.textContent;
     const taskDescriptionInput = taskButton.children[0].children[4];
@@ -497,17 +501,17 @@ function UI() {
     taskDescriptionPara.classList.add("active");
     taskDescriptionInput.classList.add("active");
     taskDescriptionInput.value = taskDescription;
-  };
+  }
 
-  closeDescriptionInput = (taskButton) => {
+  static closeDescriptionInput(taskButton) {
     const taskDescription = taskButton.children[0].children[3];
     const taskDescriptionInput = taskButton.children[0].children[4];
     taskDescription.classList.remove("active");
     taskDescriptionInput.classList.remove("active");
     taskDescriptionInput.value = "";
-  };
+  }
 
-  editTaskDescription = (e) => {
+  static editTaskDescription(e) {
     if (e.key !== "Enter") return;
     const projectTitle = document.getElementById("project-title").textContent;
     const taskTitle = this.parentNode.children[1].textContent;
@@ -527,24 +531,24 @@ function UI() {
     UI.clearTasks();
     UI.loadTasks(projectTitle);
     UI.closeDescriptionInput(this.parentNode.parentNode);
-  };
+  }
 
-  openSetDateInput = (taskButton) => {
+  static openSetDateInput(taskButton) {
     const dueDate = taskButton.children[1].children[0];
     const dueDateInput = taskButton.children[1].children[1];
     UI.closeAllPopups();
     dueDate.classList.add("active");
     dueDateInput.classList.add("active");
-  };
+  }
 
-  closeSetDateInput = (taskButton) => {
+  static closeSetDateInput(taskButton) {
     const dueDate = taskButton.children[1].children[0];
     const dueDateInput = taskButton.children[1].children[1];
     dueDate.classList.remove("active");
     dueDateInput.classList.remove("active");
-  };
+  }
 
-  setTaskDate = () => {
+  static setTaskDate() {
     const taskButton = this.parentNode.parentNode;
     const projectTitle = document.getElementById("project-title").textContent;
     const taskTitle = taskButton.children[0].children[1].textContent;
@@ -565,11 +569,5 @@ function UI() {
     UI.clearTasks();
     UI.loadTasks(projectTitle);
     UI.closeSetDateInput(taskButton);
-  };
-
-  return {
-    loadHomepage,
-  };
+  }
 }
-
-export { UI };

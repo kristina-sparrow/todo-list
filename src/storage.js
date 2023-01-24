@@ -1,102 +1,87 @@
-import { Project } from "./project";
-import { Task } from "./task";
-import { todoList } from "./todo";
+import Project from "./project";
+import Task from "./task";
+import TodoList from "./todo";
 
-function Storage() {
-  saveTodoList = (data) => {
+export default class Storage {
+  static saveTodoList(data) {
     localStorage.setItem("list", JSON.stringify(data));
-  };
+  }
 
-  getTodoList = () => {
+  static getTodoList() {
     const list = Object.assign(
-      todoList(),
+      new TodoList(),
       JSON.parse(localStorage.getItem("list"))
     );
 
     list.setProjects(
-      list.getProjects().map((project) => Object.assign(Project(), project))
+      list.getProjects().map((project) => Object.assign(new Project(), project))
     );
 
     list
       .getProjects()
       .forEach((project) =>
         project.setTasks(
-          project.getTasks().map((task) => Object.assign(Task(), task))
+          project.getTasks().map((task) => Object.assign(new Task(), task))
         )
       );
 
     return list;
-  };
+  }
 
-  addProject = (project) => {
+  static addProject(project) {
     const list = getTodoList();
     list.addProject(project);
     saveTodoList(list);
-  };
+  }
 
-  deleteProject = (projectTitle) => {
+  static deleteProject(projectTitle) {
     const list = getTodoList();
     list.deleteProject(projectTitle);
     saveTodoList(list);
-  };
+  }
 
-  addTask = (projectTitle, task) => {
+  static addTask(projectTitle, task) {
     const list = getTodoList();
     list.getProject(projectTitle).addTask(task);
     saveTodoList(list);
-  };
+  }
 
-  deleteTask = (projectTitle, taskTitle) => {
+  static deleteTask(projectTitle, taskTitle) {
     const list = getTodoList();
     list.getProject(projectTitle).deleteTask(taskTitle);
     saveTodoList(list);
-  };
+  }
 
-  renameTask = (projectTitle, taskTitle, newTaskTitle) => {
+  static renameTask(projectTitle, taskTitle, newTaskTitle) {
     const list = getTodoList();
     list.getProject(projectTitle).getTask(taskTitle).setTitle(newTaskTitle);
     saveTodoList(list);
-  };
+  }
 
-  editTaskDescription = (projectTitle, taskTitle, newTaskDescription) => {
+  static editTaskDescription(projectTitle, taskTitle, newTaskDescription) {
     const list = getTodoList();
     list
       .getProject(projectTitle)
       .getTask(taskTitle)
       .setDescription(newTaskDescription);
     saveTodoList(list);
-  };
+  }
 
-  setTaskDate = (projectTitle, taskTitle, newDueDate) => {
+  static setTaskDate(projectTitle, taskTitle, newDueDate) {
     const list = getTodoList();
     list.getProject(projectTitle).getTask(taskTitle).setDate(newDueDate);
     saveTodoList(list);
-  };
+  }
 
-  updateTodayProject = () => {
+  static updateTodayProject() {
     const list = getTodoList();
     list.updateTodayProject();
     saveTodoList(list);
-  };
+  }
 
-  updateWeekProject = () => {
+  static updateWeekProject() {
     const list = getTodoList();
     list.updateWeekProject();
     saveTodoList(list);
-  };
-
-  return {
-    saveTodoList,
-    getTodoList,
-    addProject,
-    deleteProject,
-    addTask,
-    deleteTask,
-    renameTask,
-    setTaskDate,
-    updateTodayProject,
-    updateWeekProject,
-  };
+  }
 }
-
-export { Storage };

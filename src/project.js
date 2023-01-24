@@ -1,66 +1,55 @@
 import { toDate, isToday, isThisWeek, subDays } from "date-fns";
 
-function Project(title) {
-  let tasks = [];
+export default class Project {
+  constructor(title) {
+    this.title = title;
+    this.tasks = [];
+  }
 
-  getTitle = () => {
-    return title;
-  };
+  getTitle() {
+    return this.title;
+  }
 
-  setTitle = (newTitle) => {
-    title = newTitle;
-  };
+  setTitle(newTitle) {
+    this.title = newTitle;
+  }
 
-  addTask = (newTask) => {
-    tasks.push(newTask);
-  };
+  addTask(newTask) {
+    if (this.tasks.find((task) => task.getTitle() === newTask.title)) return;
+    this.tasks.push(newTask);
+  }
 
-  deleteTask = (taskToDelete) => {
-    tasks = tasks.filter((task) => task !== taskToDelete);
-  };
+  deleteTask(taskTitle) {
+    this.tasks = this.tasks.filter((task) => task.title !== taskTitle);
+  }
 
-  getTasks = () => {
-    return tasks;
-  };
+  getTasks() {
+    return this.tasks;
+  }
 
-  setTasks = (newTasks) => {
-    tasks = newTasks;
-  };
+  setTasks(newTasks) {
+    this.tasks = newTasks;
+  }
 
-  getTask = (taskTitle) => {
-    return tasks.find((task) => task.getTitle() === taskTitle);
-  };
+  getTask(taskTitle) {
+    return this.tasks.find((task) => task.getTitle() === taskTitle);
+  }
 
-  contains = (taskTitle) => {
-    return tasks.some((task) => task.getTitle() === taskTitle);
-  };
+  contains(taskTitle) {
+    return this.tasks.some((task) => task.getTitle() === taskTitle);
+  }
 
-  getTasksToday = () => {
-    return tasks.filter((task) => {
+  getTasksToday() {
+    return this.tasks.filter((task) => {
       const taskDate = new Date(task.getDateFormatted());
       return isToday(toDate(taskDate));
     });
-  };
+  }
 
-  getTasksThisWeek = () => {
-    return tasks.filter((task) => {
+  getTasksThisWeek() {
+    return this.tasks.filter((task) => {
       const taskDate = new Date(task.getDateFormatted());
       return isThisWeek(subDays(toDate(taskDate), 1));
     });
-  };
-
-  return {
-    getTitle,
-    setTitle,
-    addTask,
-    deleteTask,
-    getTasks,
-    setTasks,
-    getTask,
-    contains,
-    getTasksToday,
-    getTasksThisWeek,
-  };
+  }
 }
-
-export { Project };

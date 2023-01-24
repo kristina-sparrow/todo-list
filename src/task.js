@@ -1,44 +1,38 @@
-function Task(title, description = "", date = "No date") {
-  getTitle = () => {
-    return title;
-  };
+export default class Task {
+  constructor(title, description, date = "No date") {
+    this.title = title;
+    this.description = description;
+    this.date = date;
+  }
 
-  setTitle = (newTitle) => {
-    title = newTitle;
-  };
+  getTitle() {
+    return this.title;
+  }
 
-  getDescription = () => {
-    return description;
-  };
+  setTitle(newTitle) {
+    this.title = newTitle;
+  }
 
-  setDescription = (newDescription) => {
-    description = newDescription;
-  };
+  getDescription() {
+    return this.description;
+  }
 
-  getDate = () => {
-    return date;
-  };
+  setDescription(newDescription) {
+    this.description = newDescription;
+  }
 
-  setDate = (newDate) => {
-    date = newDate;
-  };
+  getDate() {
+    return this.date;
+  }
+
+  setDate(dueDate) {
+    this.date = dueDate;
+  }
 
   getDateFormatted = () => {
-    const day = date.split("/")[0];
-    const month = date.split("/")[1];
-    const year = date.split("/")[2];
+    const day = this.date.split("/")[0];
+    const month = this.date.split("/")[1];
+    const year = this.date.split("/")[2];
     return "${month}/${day}/${year}";
   };
-
-  return {
-    getTitle,
-    setTitle,
-    getDescription,
-    setDescription,
-    getDate,
-    setDate,
-    getDateFormatted,
-  };
 }
-
-export { Task };
