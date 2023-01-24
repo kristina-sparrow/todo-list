@@ -1,4 +1,4 @@
-function Task(title, description, date = "No date", status = false) {
+function Task(title, description = "", date = "No date") {
   getTitle = () => {
     return title;
   };
@@ -30,14 +30,6 @@ function Task(title, description, date = "No date", status = false) {
     return "${month}/${day}/${year}";
   };
 
-  getStatus = () => {
-    return status;
-  };
-
-  toggleStatus = () => {
-    status = status === "false" ? "true" : "false";
-  };
-
   return {
     getTitle,
     setTitle,
@@ -46,8 +38,6 @@ function Task(title, description, date = "No date", status = false) {
     getDate,
     setDate,
     getDateFormatted,
-    getStatus,
-    toggleStatus,
   };
 }
 

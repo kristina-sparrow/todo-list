@@ -7,7 +7,9 @@ function UI() {
   // LOAD ELEMENTS
   loadHomepage = () => {
     UI.loadProjects();
+    UI.initProjectButtons();
     UI.openProject("All", document.getElementById("button-all-project"));
+    document.addEventListener("keydown", UI.handleKeyboardInput);
   };
 
   loadProjects = () => {
@@ -29,7 +31,9 @@ function UI() {
     Storage.getTodoList()
       .getProject(projectTitle)
       .getTasks()
-      .forEach((task) => UI.createTask(task.title, task.date));
+      .forEach((task) =>
+        UI.createTask(task.title, task.description, task.date)
+      );
     if (projectTitle !== "Today" && projectTitle !== "This Week") {
       UI.initAddTaskButtons();
     }
@@ -40,7 +44,6 @@ function UI() {
     projectPreview.innerHTML = `
         <h1 id="project-title">${projectTitle}</h1>
         <div class="tasks-list" id="tasks-list"></div>`;
-
     if (projectTitle !== "Today" && projectTitle !== "This Week") {
       projectPreview.innerHTML += `
         <button class="button-add-task" id="button-add-task">
@@ -48,11 +51,18 @@ function UI() {
           Add Task
         </button>
         <div class="add-task-popup" id="add-task-popup">
+          <label for="input-add-task-title-popup">Task Name</label>
           <input
-            class="input-add-task-popup"
-            id="input-add-task-popup"
+            class="input-add-task-title-popup"
+            id="input-add-task-title-popup"
             type="text"
           />
+          <label for="input-add-task-description-popup">Description (Optional)</label>
+          <input
+          class="input-add-task-description-popup"
+          id="input-add-task-description-popup"
+          type="text"
+        />
           <div class="add-task-popup-buttons">
             <button class="button-add-task-popup" id="button-add-task-popup">
               Add
@@ -82,16 +92,19 @@ function UI() {
           <i class="fas fa-times"></i>
         </div>
       </button>`;
+    UI.initProjectButtons();
   };
 
-  createTask = (title, dueDate) => {
+  createTask = (title, description, dueDate) => {
     const tasksList = document.getElementById("tasks-list");
     tasksList.innerHTML += `
       <button class="button-task" data-task-button>
         <div class="left-task-panel">
           <i class="far fa-circle"></i>
-          <p class="task-content">${title}</p>
-          <input type="text" class="input-task-name" data-input-task-name>
+          <p class="task-title">${title}</p>
+          <input type="text" class="input-task-title" data-input-task-title>
+          <p class="task-description">${description}</p>
+          <input type="text" class="input-task-description" data-input-task-description>
         </div>
         <div class="right-task-panel">
           <p class="due-date" id="due-date">${dueDate}</p>
@@ -99,6 +112,7 @@ function UI() {
           <i class="fas fa-times"></i>
         </div>
       </button>`;
+    UI.initTaskButtons();
   };
 
   // CLEAR ELEMENTS
@@ -121,6 +135,32 @@ function UI() {
   clearTasks = () => {
     const tasksList = document.getElementById("tasks-list");
     tasksList.textContent = "";
+  };
+
+  closeAllPopups = () => {
+    UI.closeAddProjectPopup();
+    if (document.getElementById("button-add-task")) {
+      UI.closeAddTaskPopup();
+    }
+    if (
+      document.getElementById("tasks-list") &&
+      document.getElementById("tasks-list").innerHTML !== ""
+    ) {
+      UI.closeAllInputs();
+    }
+  };
+
+  closeAllInputs = () => {
+    const taskButtons = document.querySelectorAll("[data-task-button]");
+    taskButtons.forEach((button) => {
+      UI.closeRenameInput(button);
+      UI.closeDescriptionInput(button);
+      UI.closeSetDateInput(button);
+    });
+  };
+
+  handleKeyboardInput = (e) => {
+    if (e.key === "Escape") UI.closeAllPopups();
   };
 
   // ADD PROJECT EVENT LISTENERS
@@ -188,13 +228,13 @@ function UI() {
 
   // PROJECT EVENT LISTENERS
   initProjectButtons = () => {
-    const allProjectsButton = document.getElementById("button-all-project");
-    const todayProjectsButton = document.getElementById("button-today-project");
-    const weekProjectsButton = document.getElementById("button-week-project");
+    const allProjectButton = document.getElementById("button-all-project");
+    const todayProjectButton = document.getElementById("button-today-project");
+    const weekProjectButton = document.getElementById("button-week-project");
     const projectButtons = document.querySelectorAll("[data-project-button]");
-    allProjectsButton.addEventListener("click", UI.openAllTasks);
-    todayProjectsButton.addEventListener("click", UI.openTodayTasks);
-    weekProjectsButton.addEventListener("click", UI.openWeekTasks);
+    allProjectButton.addEventListener("click", UI.openAllTasks);
+    todayProjectButton.addEventListener("click", UI.openTodayTasks);
+    weekProjectButton.addEventListener("click", UI.openWeekTasks);
     projectButtons.forEach((projectButton) =>
       projectButton.addEventListener("click", UI.handleProjectButton)
     );
@@ -211,7 +251,7 @@ function UI() {
 
   openWeekTasks = () => {
     Storage.updateWeekProject();
-    UI.openProject("This week", this);
+    UI.openProject("This Week", this);
   };
 
   handleProjectButton = (e) => {
@@ -249,11 +289,23 @@ function UI() {
     const cancelTaskPopupButton = document.getElementById(
       "button-cancel-task-popup"
     );
-    const addTaskPopupInput = document.getElementById("input-add-task-popup");
+    const addTaskTitlePopupInput = document.getElementById(
+      "input-add-task-title-popup"
+    );
+    const addTaskDescriptionPopupInput = document.getElementById(
+      "input-add-task-description-popup"
+    );
     addTaskButton.addEventListener("click", UI.openAddTaskPopup);
     addTaskPopupButton.addEventListener("click", UI.addTask);
     cancelTaskPopupButton.addEventListener("click", UI.closeAddTaskPopup);
-    addTaskPopupInput.addEventListener("keypress", UI.handleAddTaskPopupInput);
+    addTaskTitlePopupInput.addEventListener(
+      "keypress",
+      UI.handleAddTaskPopupInput
+    );
+    addTaskDescriptionPopupInput.addEventListener(
+      "keypress",
+      UI.handleAddTaskPopupInput
+    );
   };
 
   openAddTaskPopup = () => {
@@ -267,27 +319,39 @@ function UI() {
   closeAddTaskPopup = () => {
     const addTaskPopup = document.getElementById("add-task-popup");
     const addTaskButton = document.getElementById("button-add-task");
-    const addTaskInput = document.getElementById("input-add-task-popup");
+    const addTaskTitleInput = document.getElementById(
+      "input-add-task-title-popup"
+    );
+    const addTaskDescriptionInput = document.getElementById(
+      "input-add-task-description-popup"
+    );
     addTaskPopup.classList.remove("active");
     addTaskButton.classList.remove("active");
-    addTaskInput.value = "";
+    addTaskTitleInput.value = "";
+    addTaskDescriptionInput.value = "";
   };
 
   addTask = () => {
     const projectTitle = document.getElementById("project-title").textContent;
-    const addTaskPopupInput = document.getElementById("input-add-task-popup");
-    const taskTitle = addTaskPopupInput.value;
+    const addTaskTitlePopupInput = document.getElementById(
+      "input-add-task-title-popup"
+    );
+    const taskTitle = addTaskTitlePopupInput.value;
+    const addTaskDescriptionPopupInput = document.getElementById(
+      "input-add-task-description-popup"
+    );
+    const taskDescription = addTaskDescriptionPopupInput.value;
     if (taskTitle === "") {
       alert("Task title can't be empty");
       return;
     }
     if (Storage.getTodoList().getProject(projectTitle).contains(taskTitle)) {
       alert("Task titles must be different");
-      addTaskPopupInput.value = "";
+      addTaskTitlePopupInput.value = "";
       return;
     }
     Storage.addTask(projectTitle, Task(taskTitle));
-    UI.createTask(taskTitle, "No date");
+    UI.createTask(taskTitle, taskDescription, "No date");
     UI.closeAddTaskPopup();
   };
 
@@ -298,13 +362,21 @@ function UI() {
   // TASK EVENT LISTENERS
   initTaskButtons = () => {
     const taskButtons = document.querySelectorAll("[data-task-button]");
-    const taskTitleInputs = document.querySelectorAll("[data-input-task-name]");
+    const taskTitleInputs = document.querySelectorAll(
+      "[data-input-task-title]"
+    );
+    const taskDescriptionInputs = document.querySelectorAll(
+      "[data-input-task-description]"
+    );
     const dueDateInputs = document.querySelectorAll("[data-input-due-date]");
     taskButtons.forEach((taskButton) =>
       taskButton.addEventListener("click", UI.handleTaskButton)
     );
     taskTitleInputs.forEach((taskTitleInput) =>
       taskTitleInput.addEventListener("keypress", UI.renameTask)
+    );
+    taskDescriptionInputs.forEach((taskDescriptionInput) =>
+      taskDescriptionInput.addEventListener("keypress", UI.editTaskDescription)
     );
     dueDateInputs.forEach((dueDateInput) =>
       dueDateInput.addEventListener("change", UI.setTaskDate)
@@ -320,8 +392,12 @@ function UI() {
       UI.deleteTask(this);
       return;
     }
-    if (e.target.classList.contains("task-content")) {
+    if (e.target.classList.contains("task-title")) {
       UI.openRenameInput(this);
+      return;
+    }
+    if (e.target.classList.contains("task-description")) {
+      UI.openDescriptionInput(this);
       return;
     }
     if (e.target.classList.contains("due-date")) {
@@ -413,6 +489,46 @@ function UI() {
     UI.closeRenameInput(this.parentNode.parentNode);
   };
 
+  openDescriptionInput = (taskButton) => {
+    const taskDescriptionPara = taskButton.children[0].children[3];
+    let taskDescription = taskDescriptionPara.textContent;
+    const taskDescriptionInput = taskButton.children[0].children[4];
+    UI.closeAllPopups();
+    taskDescriptionPara.classList.add("active");
+    taskDescriptionInput.classList.add("active");
+    taskDescriptionInput.value = taskDescription;
+  };
+
+  closeDescriptionInput = (taskButton) => {
+    const taskDescription = taskButton.children[0].children[3];
+    const taskDescriptionInput = taskButton.children[0].children[4];
+    taskDescription.classList.remove("active");
+    taskDescriptionInput.classList.remove("active");
+    taskDescriptionInput.value = "";
+  };
+
+  editTaskDescription = (e) => {
+    if (e.key !== "Enter") return;
+    const projectTitle = document.getElementById("project-title").textContent;
+    const taskTitle = this.parentNode.children[1].textContent;
+    const newTaskDescription = this.value;
+    if (projectTitle === "Today" || projectTitle === "This Week") {
+      const mainProjectTitle = taskTitle.split("(")[1].split(")")[0];
+      const mainTaskTitle = taskTitle.split(" ")[0];
+      Storage.editTaskDescription(projectTitle, taskTitle, newTaskDescription);
+      Storage.editTaskDescription(
+        mainProjectTitle,
+        mainTaskTitle,
+        newTaskDescription
+      );
+    } else {
+      Storage.editTaskDescription(projectTitle, taskTitle, newTaskDescription);
+    }
+    UI.clearTasks();
+    UI.loadTasks(projectTitle);
+    UI.closeDescriptionInput(this.parentNode.parentNode);
+  };
+
   openSetDateInput = (taskButton) => {
     const dueDate = taskButton.children[1].children[0];
     const dueDateInput = taskButton.children[1].children[1];
@@ -432,7 +548,7 @@ function UI() {
     const taskButton = this.parentNode.parentNode;
     const projectTitle = document.getElementById("project-title").textContent;
     const taskTitle = taskButton.children[0].children[1].textContent;
-    const newDueDate = format(new Date(this.value), "dd/MM/yyyy");
+    const newDueDate = format(new Date(this.value), "mm/dd/yyyy");
     if (projectTitle === "Today" || projectTitle === "This Week") {
       const mainProjectTitle = taskTitle.split("(")[1].split(")")[0];
       const mainTaskTitle = taskTitle.split(" (")[0];

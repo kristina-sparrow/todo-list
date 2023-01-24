@@ -27,8 +27,12 @@ function Project(title) {
     tasks = newTasks;
   };
 
-  contains = (taskName) => {
-    return tasks.some((task) => task.getTitle() === taskName);
+  getTask = (taskTitle) => {
+    return tasks.find((task) => task.getTitle() === taskTitle);
+  };
+
+  contains = (taskTitle) => {
+    return tasks.some((task) => task.getTitle() === taskTitle);
   };
 
   getTasksToday = () => {
@@ -52,6 +56,7 @@ function Project(title) {
     deleteTask,
     getTasks,
     setTasks,
+    getTask,
     contains,
     getTasksToday,
     getTasksThisWeek,

@@ -12,12 +12,12 @@ function todoList() {
     return projects;
   };
 
-  getProject = (projectName) => {
-    return projects.find((project) => project.getTitle() === projectName);
+  getProject = (projectTitle) => {
+    return projects.find((project) => project.getTitle() === projectTitle);
   };
 
-  contains = (projectName) => {
-    return projects.some((project) => project.getTitle() === projectName);
+  contains = (projectTitle) => {
+    return projects.some((project) => project.getTitle() === projectTitle);
   };
 
   addProject = (newProject) => {
@@ -25,9 +25,9 @@ function todoList() {
     projects.push(newProject);
   };
 
-  deleteProject = (projectName) => {
+  deleteProject = (projectTitle) => {
     const projectToDelete = projects.find(
-      (project) => project.getTitle() === projectName
+      (project) => project.getTitle() === projectTitle
     );
     projects.splice(projects.indexOf(projectToDelete), 1);
   };
@@ -39,13 +39,12 @@ function todoList() {
         return;
       const todayTasks = project.getTasksToday();
       todayTasks.forEach((task) => {
-        const taskName = `${task.getTitle()} (${project.getTitle()})`;
+        const taskTitle = `${task.getTitle()} (${project.getTitle()})`;
         this.getProject("Today").addTask(
           Task(
-            taskName,
+            taskTitle,
             task.getDescription(),
             task.getDate(),
-            task.getFavorite(),
             task.getStatus()
           )
         );
@@ -60,13 +59,12 @@ function todoList() {
         return;
       const weekTasks = project.getTasksThisWeek();
       weekTasks.forEach((task) => {
-        const taskName = `${task.getName()} (${project.getName()})`;
+        const taskTitle = `${task.getTitle()} (${project.getTitle()})`;
         this.getProject("This Week").addTask(
           Task(
-            taskName,
+            taskTitle,
             task.getDescription(),
             task.getDate(),
-            task.getFavorite(),
             task.getStatus()
           )
         );

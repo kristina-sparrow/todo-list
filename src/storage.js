@@ -34,33 +34,42 @@ function Storage() {
     saveTodoList(list);
   };
 
-  deleteProject = (projectName) => {
+  deleteProject = (projectTitle) => {
     const list = getTodoList();
-    list.deleteProject(projectName);
+    list.deleteProject(projectTitle);
     saveTodoList(list);
   };
 
-  addTask = (projectName, task) => {
+  addTask = (projectTitle, task) => {
     const list = getTodoList();
-    list.getProject(projectName).addTask(task);
+    list.getProject(projectTitle).addTask(task);
     saveTodoList(list);
   };
 
-  deleteTask = (projectName, taskName) => {
+  deleteTask = (projectTitle, taskTitle) => {
     const list = getTodoList();
-    list.getProject(projectName).deleteTask(taskName);
+    list.getProject(projectTitle).deleteTask(taskTitle);
     saveTodoList(list);
   };
 
-  renameTask = (projectName, taskName, newTaskName) => {
+  renameTask = (projectTitle, taskTitle, newTaskTitle) => {
     const list = getTodoList();
-    list.getProject(projectName).getTask(taskName).setName(newTaskName);
+    list.getProject(projectTitle).getTask(taskTitle).setTitle(newTaskTitle);
     saveTodoList(list);
   };
 
-  setTaskDate = (projectName, taskName, newDueDate) => {
+  editTaskDescription = (projectTitle, taskTitle, newTaskDescription) => {
     const list = getTodoList();
-    list.getProject(projectName).getTask(taskName).setDate(newDueDate);
+    list
+      .getProject(projectTitle)
+      .getTask(taskTitle)
+      .setDescription(newTaskDescription);
+    saveTodoList(list);
+  };
+
+  setTaskDate = (projectTitle, taskTitle, newDueDate) => {
+    const list = getTodoList();
+    list.getProject(projectTitle).getTask(taskTitle).setDate(newDueDate);
     saveTodoList(list);
   };
 
