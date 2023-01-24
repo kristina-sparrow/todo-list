@@ -30,11 +30,32 @@
           </button>
         </div>
         <div class="divider"></div>
-        <h2>Projects</h2>
-        <div id="project-list">
-          <button id="button-add-project">
-            <i class="fa-thin fa-plus"></i>Add Project
-          </button>
+        <h2 class="projects-title">Projects</h2>
+        <div class="projects-list" id="projects-list"></div>
+        <button class="button-add-project" id="button-add-project">
+          <i class="fas fa-plus"></i>
+          Add Project
+        </button>
+        <div class="add-project-popup" id="add-project-popup">
+          <input
+            class="input-add-project-popup"
+            id="input-add-project-popup"
+            type="text"
+          />
+          <div class="add-project-popup-buttons">
+            <button
+              class="button-add-project-popup"
+              id="button-add-project-popup"
+            >
+              Add
+            </button>
+            <button
+              class="button-cancel-project-popup"
+              id="button-cancel-project-popup"
+            >
+              Cancel
+            </button>
+          </div>
         </div>
       </nav>
       <div id="project-preview"></div>
