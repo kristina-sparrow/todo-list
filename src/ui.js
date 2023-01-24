@@ -571,3 +571,5 @@ function UI() {
     loadHomepage,
   };
 }
+
+export { UI };

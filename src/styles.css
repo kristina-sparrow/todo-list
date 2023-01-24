@@ -41,3 +41,107 @@ footer {
 .sidebar {
   background-color: lightsteelblue;
 }
+
+/* Add Project Buttons & Popup */
+.add-project-popup {
+  display: none;
+  width: 100%;
+  padding: 10px;
+  text-align: center;
+}
+
+.add-project-popup.active {
+  display: block;
+}
+
+.input-add-project-popup {
+  border: 1px solid #aaa;
+  margin-bottom: 10px;
+}
+
+.add-project-popup-buttons {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.button-add-project-popup {
+  border: 1px solid #99dd99;
+  background-color: #aaffaa;
+  font-weight: bold;
+}
+
+.button-cancel-project-popup {
+  border: 1px solid #eeadad;
+  background-color: #ffbebe;
+  font-weight: bold;
+}
+
+.button-add-project-popup:hover {
+  background-color: #a6f0a6;
+}
+
+.button-cancel-project-popup:hover {
+  background-color: #f5b2b2;
+}
+
+/* Add Task Buttons & Popup */
+.button-add-task {
+  display: block;
+  padding-left: 15px;
+  margin-top: 10px;
+  text-align: left;
+}
+
+.button-add-task.active {
+  display: none;
+}
+
+.button-add-task:hover {
+  background-color: #ddd;
+}
+
+.add-task-popup {
+  display: none;
+  width: 100%;
+  padding: 10px;
+  text-align: center;
+}
+
+.add-task-popup.active {
+  display: block;
+}
+
+.input-add-task-title-popup,
+.input-add-task-description-popup {
+  border: 1px solid #aaa;
+  margin-bottom: 10px;
+}
+
+.add-task-popup-buttons {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  gap: 20px;
+}
+
+.button-add-task-popup {
+  border: 1px solid #99dd99;
+  background-color: #aaffaa;
+  font-weight: bold;
+}
+
+.button-cancel-task-popup {
+  border: 1px solid #eeadad;
+  background-color: #ffbebe;
+  font-weight: bold;
+}
+
+.button-add-task-popup:hover {
+  background-color: #a6f0a6;
+}
+
+.button-cancel-task-popup:hover {
+  background-color: #f5b2b2;
+}
