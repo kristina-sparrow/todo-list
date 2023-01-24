@@ -1,3 +1,4 @@
 import "./styles.css";
+import { UI } from "./ui";
 
-console.log("Test");
+document.addEventListener("DOMContentLoaded", UI.loadHomepage);
