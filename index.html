@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script
+      src="https://kit.fontawesome.com/0f70dd3e5b.js"
+      crossorigin="anonymous"
+    ></script>
+    <script src="bundle.js" defer></script>
+    <title>WhatToDo</title>
+  <link rel="icon" href="favicon.png"><script defer src="bundle.js"></script><link href="main.css" rel="stylesheet"></head>
+  <body>
+    <div id="#page">
+      <header>
+        <i class="fa-duotone fa-check-double"></i>
+        <p>WhatToDo</p>
+      </header>
+      <div class="main">
+        <nav class="sidebar">
+          <div class="top-links">
+            <button class="sidebar-link" id="button-all-project">
+              <i class="fa-thin fa-calendar-lines"></i>All
+            </button>
+            <button class="sidebar-link" id="button-today-project">
+              <i class="fa-thin fa-calendar-day"></i>Today
+            </button>
+            <button class="sidebar-link" id="button-week-project">
+              <i class="fa-thin fa-calendar-week"></i>Week
+            </button>
+          </div>
+          <div class="divider"></div>
+          <h2 class="projects-title">Projects</h2>
+          <div class="projects-list" id="projects-list"></div>
+          <button class="button-add-project" id="button-add-project">
+            <i class="fas fa-plus"></i>
+            Add Project
+          </button>
+          <div class="add-project-popup" id="add-project-popup">
+            <input
+              class="input-add-project-popup"
+              id="input-add-project-popup"
+              type="text"
+            />
+            <div class="add-project-popup-buttons">
+              <button
+                class="button-add-project-popup"
+                id="button-add-project-popup"
+              >
+                Add
+              </button>
+              <button
+                class="button-cancel-project-popup"
+                id="button-cancel-project-popup"
+              >
+                Cancel
+              </button>
+            </div>
+          </div>
+        </nav>
+        <div id="project-preview"></div>
+      </div>
+      <footer class="footer">
+        <p>Built by Kristina Sparrow</p>
+        <a
+          href="https://github.com/kristina-sparrow"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <i class="fa-brands fa-github"></i>
+        </a>
+      </footer>
+    </div>
+  </body>
+</html>
