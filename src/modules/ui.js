@@ -10,7 +10,6 @@ export default class UI {
     UI.initProjectButtons();
     UI.openProject("All", document.getElementById("button-all-project"));
     document.addEventListener("keydown", UI.handleKeyboardInput);
-    console.log("Homepage loaded");
   }
 
   static loadProjects() {
@@ -82,7 +81,7 @@ export default class UI {
 
   // CREATE ELEMENTS
   static createProject(title) {
-    const userProjects = document.getElementById("project-list");
+    const userProjects = document.getElementById("projects-list");
     userProjects.innerHTML += ` 
       <button class="button-project" data-project-button>
         <div class="left-project-panel">
@@ -211,16 +210,13 @@ export default class UI {
     const projectTitle = addProjectPopupInput.value;
     if (projectTitle === "") {
       alert("Project title can't be empty");
-      return;
-    }
-    if (Storage.getTodoList().contains(projectTitle)) {
-      addProjectPopupInput.value = "";
+    } else if (Storage.getTodoList().contains(projectTitle)) {
       alert("Project titles must be different");
-      return;
+    } else {
+      Storage.addProject(new Project(projectTitle));
+      UI.createProject(projectTitle);
+      UI.closeAddProjectPopup();
     }
-    Storage.addProject(new Project(projectTitle));
-    UI.createProject(projectTitle);
-    UI.closeAddProjectPopup();
   }
 
   static handleAddProjectPopupInput(e) {
@@ -495,7 +491,7 @@ export default class UI {
 
   static openDescriptionInput(taskButton) {
     const taskDescriptionPara = taskButton.children[0].children[3];
-    let taskDescription = taskDescriptionPara.textContent;
+    const taskDescription = taskDescriptionPara.textContent;
     const taskDescriptionInput = taskButton.children[0].children[4];
     UI.closeAllPopups();
     taskDescriptionPara.classList.add("active");

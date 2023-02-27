@@ -29,59 +29,59 @@ export default class Storage {
   }
 
   static addProject(project) {
-    const list = getTodoList();
+    const list = Storage.getTodoList();
     list.addProject(project);
-    saveTodoList(list);
+    Storage.saveTodoList(list);
   }
 
   static deleteProject(projectTitle) {
-    const list = getTodoList();
+    const list = Storage.getTodoList();
     list.deleteProject(projectTitle);
-    saveTodoList(list);
+    Storage.saveTodoList(list);
   }
 
   static addTask(projectTitle, task) {
-    const list = getTodoList();
+    const list = Storage.getTodoList();
     list.getProject(projectTitle).addTask(task);
-    saveTodoList(list);
+    Storage.saveTodoList(list);
   }
 
   static deleteTask(projectTitle, taskTitle) {
-    const list = getTodoList();
+    const list = Storage.getTodoList();
     list.getProject(projectTitle).deleteTask(taskTitle);
-    saveTodoList(list);
+    Storage.saveTodoList(list);
   }
 
   static renameTask(projectTitle, taskTitle, newTaskTitle) {
-    const list = getTodoList();
+    const list = Storage.getTodoList();
     list.getProject(projectTitle).getTask(taskTitle).setTitle(newTaskTitle);
-    saveTodoList(list);
+    Storage.saveTodoList(list);
   }
 
   static editTaskDescription(projectTitle, taskTitle, newTaskDescription) {
-    const list = getTodoList();
+    const list = Storage.getTodoList();
     list
       .getProject(projectTitle)
       .getTask(taskTitle)
       .setDescription(newTaskDescription);
-    saveTodoList(list);
+    Storage.saveTodoList(list);
   }
 
   static setTaskDate(projectTitle, taskTitle, newDueDate) {
-    const list = getTodoList();
+    const list = Storage.getTodoList();
     list.getProject(projectTitle).getTask(taskTitle).setDate(newDueDate);
-    saveTodoList(list);
+    Storage.saveTodoList(list);
   }
 
   static updateTodayProject() {
-    const list = getTodoList();
+    const list = Storage.getTodoList();
     list.updateTodayProject();
-    saveTodoList(list);
+    Storage.saveTodoList(list);
   }
 
   static updateWeekProject() {
-    const list = getTodoList();
+    const list = Storage.getTodoList();
     list.updateWeekProject();
-    saveTodoList(list);
+    Storage.saveTodoList(list);
   }
 }
