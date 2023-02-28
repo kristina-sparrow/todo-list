@@ -51,18 +51,22 @@ export default class UI {
           Add Task
         </button>
         <div class="add-task-popup" id="add-task-popup">
-          <label for="input-add-task-title-popup">Task Name</label>
-          <input
-            class="input-add-task-title-popup"
-            id="input-add-task-title-popup"
+          <div class="input-group"> 
+            <label for="input-add-task-title-popup">Task Name</label>
+            <input
+              class="input-add-task-title-popup"
+              id="input-add-task-title-popup"
+              type="text"
+            />
+          </div>
+          <div class="input-group">
+            <label for="input-add-task-description-popup">Description (Optional)</label>
+            <input
+            class="input-add-task-description-popup"
+            id="input-add-task-description-popup"
             type="text"
           />
-          <label for="input-add-task-description-popup">Description (Optional)</label>
-          <input
-          class="input-add-task-description-popup"
-          id="input-add-task-description-popup"
-          type="text"
-        />
+          </div>
           <div class="add-task-popup-buttons">
             <button class="button-add-task-popup" id="button-add-task-popup">
               Add

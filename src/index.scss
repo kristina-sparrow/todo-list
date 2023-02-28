@@ -1,3 +1,17 @@
+/* VARIABLES & FONTS */
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@200;300;400;500;600;700;800&display=swap");
+$clr-bg: #ffffff;
+$clr-light: #fff;
+$clr-grayL: #ebebeb;
+$clr-grayM: #e0e0e0;
+$clr-grayD: #b0b0b0;
+$clr-dark: #41404b;
+$clr-blue: hsla(201, 50%, 43%, 1);
+$clr-greenD: hsla(194, 50%, 33%, 1);
+$clr-greenL: rgb(129, 187, 150);
+$clr-red: hsla(0, 35%, 58%, 1);
+
+/* BASE */
 *,
 *::before,
 *::after {
@@ -6,142 +20,227 @@
   box-sizing: border-box;
 }
 
+html {
+  scroll-behavior: smooth;
+  font-family: "Montserrat", sans-serif;
+  font-size: 16px;
+  font-weight: 400px;
+}
+
 #page {
   display: flex;
   flex-direction: column;
-  border: 1px solid black;
-  height: 100vh;
   width: 100vw;
 }
 
-header,
-footer {
+.main {
+  width: 100vw;
+  height: 100vh;
   display: flex;
   flex-direction: row;
+  justify-content: flex-start;
+}
+
+button {
+  border: none;
+  padding: 8px 16px;
+  background-color: $clr-blue;
+  color: $clr-light;
+  font-family: inherit;
+}
+
+/* HEADER */
+.header {
+  display: flex;
   align-items: center;
   justify-content: center;
-  background-color: lightgray;
-  height: 60px;
+  gap: 8px;
+  background-color: $clr-dark;
+  color: $clr-light;
+  padding: 20px;
+  i {
+    color: $clr-greenL;
+    font-size: 2.5rem;
+  }
+  .header__title {
+    font-size: 2.5rem;
+  }
 }
 
-.main {
-  display: flex;
-  flex-direction: row;
-  height: calc(100vh - 120px);
-}
-
-.sidebar,
-.top-links {
+/* SIDEBAR */
+.sidebar {
+  background-color: $clr-grayM;
+  width: 20%;
+  padding: 30px 0px 30px 30px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: space-around;
+  justify-content: flex-start;
+  gap: 15px;
+  .sidebar__top {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+    gap: 20px;
+    button {
+      font-size: 1.3rem;
+      font-weight: 400;
+      background-color: inherit;
+      color: $clr-dark;
+      &:hover {
+        background-color: $clr-blue;
+        color: $clr-light;
+      }
+      i {
+        padding-right: 10px;
+      }
+    }
+  }
+  .sidebar__bottom {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+    gap: 20px;
+    .projects-list {
+      width: 100%;
+    }
+    .button-project {
+      width: 100%;
+      background-color: inherit;
+      color: $clr-dark;
+      font-size: 1.3rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      .left-project-panel {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+      }
+      .right-project-panel {
+        font-size: 1rem;
+        visibility: hidden;
+      }
+      &:hover {
+        background-color: $clr-grayL;
+        .right-project-panel {
+          visibility: visible;
+        }
+      }
+    }
+  }
 }
 
-.sidebar {
-  background-color: lightsteelblue;
+/* ADD PROJECT BUTTON & POPUP */
+.button-add-project {
+  font-size: 1.2em;
+  &.active {
+    display: none;
+  }
 }
 
-/* Add Project Buttons & Popup */
 .add-project-popup {
   display: none;
   width: 100%;
-  padding: 10px;
-  text-align: center;
+  &.active {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    gap: 10px;
+  }
+  .input-add-project-popup {
+    border: none;
+    padding: 5px 2px;
+  }
+  .add-project-popup-buttons {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 30px;
+    .button-add-project-popup {
+      background-color: $clr-greenD;
+    }
+    .button-cancel-project-popup {
+      background-color: $clr-red;
+    }
+  }
 }
 
-.add-project-popup.active {
-  display: block;
-}
-
-.input-add-project-popup {
-  border: 1px solid #aaa;
-  margin-bottom: 10px;
-}
-
-.add-project-popup-buttons {
+/* PROJECT PREVIEW */
+#project-preview {
+  width: 80%;
+  padding: 40px;
   display: flex;
-  align-items: center;
-  justify-content: space-between;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
   gap: 20px;
 }
 
-.button-add-project-popup {
-  border: 1px solid #99dd99;
-  background-color: #aaffaa;
-  font-weight: bold;
-}
-
-.button-cancel-project-popup {
-  border: 1px solid #eeadad;
-  background-color: #ffbebe;
-  font-weight: bold;
-}
-
-.button-add-project-popup:hover {
-  background-color: #a6f0a6;
-}
-
-.button-cancel-project-popup:hover {
-  background-color: #f5b2b2;
-}
-
-/* Add Task Buttons & Popup */
+/* ADD TASK BUTTON & POPUP */
 .button-add-task {
   display: block;
-  padding-left: 15px;
-  margin-top: 10px;
-  text-align: left;
-}
-
-.button-add-task.active {
-  display: none;
-}
-
-.button-add-task:hover {
-  background-color: #ddd;
+  font-size: 1.2rem;
+  &.active {
+    display: none;
+  }
 }
 
 .add-task-popup {
+  background-color: $clr-grayL;
   display: none;
-  width: 100%;
-  padding: 10px;
-  text-align: center;
+  width: 80%;
+  padding: 20px;
+  &.active {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-around;
+    gap: 20px;
+  }
+  .input-group {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    gap: 5px;
+    input {
+      border: none;
+      padding: 5px 2px;
+    }
+  }
+  .add-task-popup-buttons {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    .button-add-task-popup {
+      background-color: $clr-greenD;
+    }
+    .button-cancel-task-popup {
+      background-color: $clr-red;
+    }
+  }
 }
 
-.add-task-popup.active {
-  display: block;
-}
-
-.input-add-task-title-popup,
-.input-add-task-description-popup {
-  border: 1px solid #aaa;
-  margin-bottom: 10px;
-}
-
-.add-task-popup-buttons {
+/* FOOTER */
+.footer {
+  background-color: $clr-dark;
+  color: $clr-light;
   display: flex;
   align-items: center;
-  justify-content: space-around;
-  gap: 20px;
-}
-
-.button-add-task-popup {
-  border: 1px solid #99dd99;
-  background-color: #aaffaa;
-  font-weight: bold;
-}
-
-.button-cancel-task-popup {
-  border: 1px solid #eeadad;
-  background-color: #ffbebe;
-  font-weight: bold;
-}
-
-.button-add-task-popup:hover {
-  background-color: #a6f0a6;
-}
-
-.button-cancel-task-popup:hover {
-  background-color: #f5b2b2;
+  justify-content: center;
+  gap: 8px;
+  padding: 15px;
+  i {
+    color: $clr-light;
+    font-size: 1.2rem;
+  }
 }

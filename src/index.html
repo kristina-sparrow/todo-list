@@ -12,54 +12,56 @@
   </head>
   <body>
     <div id="page">
-      <header>
-        <i class="fa-duotone fa-check-double"></i>
-        <p>WhatToDo</p>
+      <header class="header">
+        <i class="fa-solid fa-check-double header__icon"></i>
+        <h1 class="header__title">WhatToDo</h1>
       </header>
-      <div class="main">
+      <main class="main">
         <nav class="sidebar">
-          <div class="top-links">
+          <div class="sidebar__top">
             <button class="sidebar-link" id="button-all-project">
-              <i class="fa-thin fa-calendar-lines"></i>All
+              <i class="fa-regular fa-calendar"></i>All
             </button>
             <button class="sidebar-link" id="button-today-project">
-              <i class="fa-thin fa-calendar-day"></i>Today
+              <i class="fa-solid fa-calendar-day"></i>Today
             </button>
             <button class="sidebar-link" id="button-week-project">
-              <i class="fa-thin fa-calendar-week"></i>Week
+              <i class="fa-solid fa-calendar-week"></i>This Week
             </button>
           </div>
-          <div class="divider"></div>
-          <h2 class="projects-title">Projects</h2>
-          <div class="projects-list" id="projects-list"></div>
-          <button class="button-add-project" id="button-add-project">
-            <i class="fas fa-plus"></i>
-            Add Project
-          </button>
-          <div class="add-project-popup" id="add-project-popup">
-            <input
-              class="input-add-project-popup"
-              id="input-add-project-popup"
-              type="text"
-            />
-            <div class="add-project-popup-buttons">
-              <button
-                class="button-add-project-popup"
-                id="button-add-project-popup"
-              >
-                Add
-              </button>
-              <button
-                class="button-cancel-project-popup"
-                id="button-cancel-project-popup"
-              >
-                Cancel
-              </button>
+          <div class="sidebar__divider"></div>
+          <div class="sidebar__bottom">
+            <h2 class="projects-title">Projects</h2>
+            <div class="projects-list" id="projects-list"></div>
+            <button class="button-add-project" id="button-add-project">
+              <i class="fas fa-plus"></i>
+              Add Project
+            </button>
+            <div class="add-project-popup" id="add-project-popup">
+              <input
+                class="input-add-project-popup"
+                id="input-add-project-popup"
+                type="text"
+              />
+              <div class="add-project-popup-buttons">
+                <button
+                  class="button-add-project-popup"
+                  id="button-add-project-popup"
+                >
+                  Add
+                </button>
+                <button
+                  class="button-cancel-project-popup"
+                  id="button-cancel-project-popup"
+                >
+                  Cancel
+                </button>
+              </div>
             </div>
           </div>
         </nav>
         <div id="project-preview"></div>
-      </div>
+      </main>
       <footer class="footer">
         <p>Built by Kristina Sparrow</p>
         <a
