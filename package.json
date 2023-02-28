@@ -38,7 +38,9 @@
       "webpack.config.js",
       "bundle.js"
     ],
-    "rules": {}
+    "rules": {
+      "no-alert": "off"
+    }
   },
   "devDependencies": {
     "@babel/core": "^7.21.0",

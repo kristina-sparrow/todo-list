@@ -88,13 +88,8 @@ export default class UI {
     const userProjects = document.getElementById("projects-list");
     userProjects.innerHTML += ` 
       <button class="button-project" data-project-button>
-        <div class="left-project-panel">
-          <i class="fas fa-tasks"></i>
-          <span>${title}</span>
-        </div>
-        <div class="right-project-panel">
+          <span class="project-title-sidebar"><i class="fa-solid fa-check"></i>${title}</span>
           <i class="fas fa-times"></i>
-        </div>
       </button>`;
     UI.initProjectButtons();
   }
@@ -256,7 +251,7 @@ export default class UI {
   }
 
   static handleProjectButton(e) {
-    const projectTitle = this.children[0].children[1].textContent;
+    const projectTitle = this.children[0].textContent;
     if (e.target.classList.contains("fa-times")) {
       UI.deleteProject(projectTitle, this);
       return;

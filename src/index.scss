@@ -2,13 +2,14 @@
 @import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@200;300;400;500;600;700;800&display=swap");
 $clr-bg: #ffffff;
 $clr-light: #fff;
-$clr-grayL: #ebebeb;
+$clr-grayL: #eeeeee;
 $clr-grayM: #e0e0e0;
 $clr-grayD: #b0b0b0;
 $clr-dark: #41404b;
 $clr-blue: hsla(201, 50%, 43%, 1);
 $clr-greenD: hsla(194, 50%, 33%, 1);
-$clr-greenL: rgb(129, 187, 150);
+$clr-greenM: rgb(129, 187, 150);
+$clr-greenL: rgb(222, 237, 228);
 $clr-red: hsla(0, 35%, 58%, 1);
 
 /* BASE */
@@ -59,7 +60,7 @@ button {
   color: $clr-light;
   padding: 20px;
   i {
-    color: $clr-greenL;
+    color: $clr-greenM;
     font-size: 2.5rem;
   }
   .header__title {
@@ -70,22 +71,22 @@ button {
 /* SIDEBAR */
 .sidebar {
   background-color: $clr-grayM;
-  width: 20%;
-  padding: 30px 0px 30px 30px;
+  min-width: 275px;
+  padding: 20px 0px 20px 20px;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: flex-start;
-  gap: 15px;
+  gap: 30px;
   .sidebar__top {
     width: 100%;
     display: flex;
     flex-direction: column;
     align-items: flex-start;
     justify-content: flex-start;
-    gap: 20px;
+    gap: 15px;
     button {
-      font-size: 1.3rem;
+      font-size: 1.1rem;
       font-weight: 400;
       background-color: inherit;
       color: $clr-dark;
@@ -98,6 +99,12 @@ button {
       }
     }
   }
+  .sidebar__divider {
+    height: 1px;
+    width: 80%;
+    margin-left: -30px;
+    background-color: $clr-grayD;
+  }
   .sidebar__bottom {
     width: 100%;
     display: flex;
@@ -106,30 +113,36 @@ button {
     justify-content: flex-start;
     gap: 20px;
     .projects-list {
-      width: 100%;
+      width: 90%;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      justify-content: flex-start;
+      gap: 15px;
     }
     .button-project {
       width: 100%;
       background-color: inherit;
       color: $clr-dark;
-      font-size: 1.3rem;
+      font-size: 1.1rem;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 10px;
-      .left-project-panel {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 10px;
+      .project-title-sidebar {
+        text-align: left;
+        .fa-check {
+          margin-left: -10px;
+          margin-right: 5px;
+          color: $clr-greenM;
+        }
       }
-      .right-project-panel {
+      .fa-times {
         font-size: 1rem;
         visibility: hidden;
       }
       &:hover {
         background-color: $clr-grayL;
-        .right-project-panel {
+        .fa-times {
           visibility: visible;
         }
       }
@@ -139,7 +152,7 @@ button {
 
 /* ADD PROJECT BUTTON & POPUP */
 .button-add-project {
-  font-size: 1.2em;
+  font-size: 1.1em;
   &.active {
     display: none;
   }
@@ -147,7 +160,7 @@ button {
 
 .add-project-popup {
   display: none;
-  width: 100%;
+  width: 80%;
   &.active {
     display: flex;
     flex-direction: column;
@@ -156,14 +169,12 @@ button {
     gap: 10px;
   }
   .input-add-project-popup {
+    width: 100%;
     border: none;
-    padding: 5px 2px;
+    font-family: inherit;
+    padding: 8px 2px;
   }
   .add-project-popup-buttons {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 30px;
     .button-add-project-popup {
       background-color: $clr-greenD;
     }
@@ -175,7 +186,8 @@ button {
 
 /* PROJECT PREVIEW */
 #project-preview {
-  width: 80%;
+  min-width: 800px;
+  max-width: 80%;
   padding: 40px;
   display: flex;
   flex-direction: column;
@@ -184,10 +196,109 @@ button {
   gap: 20px;
 }
 
+/* TASKS */
+.tasks-list {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+}
+
+.button-task {
+  width: 80%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  padding: 10px;
+  cursor: default;
+  font-family: inherit;
+  font-size: 1.1rem;
+  background-color: inherit;
+  color: $clr-dark;
+  &:hover {
+    background-color: $clr-greenL;
+    .right-task-panel i {
+      visibility: visible;
+    }
+  }
+
+  .left-task-panel {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+    .i {
+      font-size: 24px;
+      cursor: pointer;
+    }
+    .task-content {
+      cursor: pointer;
+      &.active {
+        display: none;
+      }
+    }
+    .input-task-title {
+      display: none;
+      height: 24px;
+      padding: 5px;
+      border: 1px solid #555;
+      background-color: $clr-light;
+      color: inherit;
+      font-family: inherit;
+      &.active {
+        display: none;
+      }
+    }
+    .input-task-description {
+      display: none;
+      height: 24px;
+      padding: 5px;
+      border: 1px solid #555;
+      background-color: $clr-light;
+      color: inherit;
+      font-family: inherit;
+      &.active {
+        display: none;
+      }
+    }
+  }
+
+  .right-task-panel {
+    display: flex;
+    align-items: center;
+    i {
+      visibility: hidden;
+      cursor: pointer;
+    }
+    .due-date {
+      margin-right: 10px;
+      cursor: pointer;
+      &.active {
+        display: none;
+      }
+    }
+    .input-due-date {
+      display: none;
+      height: 24px;
+      padding: 5px;
+      border: 1px solid #555;
+      margin: 0 10px;
+      background-color: $clr-light;
+      color: inherit;
+      font-family: inherit;
+      &.active {
+        display: block;
+      }
+    }
+  }
+}
+
 /* ADD TASK BUTTON & POPUP */
 .button-add-task {
   display: block;
-  font-size: 1.2rem;
+  font-size: 1.1rem;
   &.active {
     display: none;
   }
