@@ -1,8 +1,8 @@
 export default class Task {
-  constructor(title, description, date = "No date") {
+  constructor(title, date = "No date", doneStatus = false) {
     this.title = title;
-    this.description = description;
     this.date = date;
+    this.doneStatus = doneStatus;
   }
 
   getTitle() {
@@ -13,20 +13,20 @@ export default class Task {
     this.title = newTitle;
   }
 
-  getDescription() {
-    return this.description;
-  }
-
-  setDescription(newDescription) {
-    this.description = newDescription;
-  }
-
   getDate() {
     return this.date;
   }
 
   setDate(dueDate) {
     this.date = dueDate;
+  }
+
+  getDoneStatus() {
+    return this.doneStatus;
+  }
+
+  setDoneStatus(newStatus) {
+    this.doneStatus = newStatus;
   }
 
   getDateFormatted = () => {

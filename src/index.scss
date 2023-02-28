@@ -223,13 +223,36 @@ button {
       visibility: visible;
     }
   }
+  &.true {
+    .task-title {
+      text-decoration: line-through;
+    }
+    .due-date {
+      text-decoration: line-through;
+    }
+    .fa-circle-check {
+      color: $clr-greenM;
+    }
+    .fa-circle {
+      display: none;
+    }
+  }
+  &.false {
+    .fa-circle-check {
+      display: none;
+    }
+  }
 
   .left-task-panel {
     display: flex;
     align-items: center;
     justify-content: center;
     gap: 20px;
-    .i {
+    .fa-circle {
+      font-size: 24px;
+      cursor: pointer;
+    }
+    .fa-circle-check {
       font-size: 24px;
       cursor: pointer;
     }

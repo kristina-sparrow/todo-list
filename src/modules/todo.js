@@ -48,12 +48,7 @@ export default class TodoList {
       todayTasks.forEach((task) => {
         const taskTitle = `${task.getTitle()} (${project.getTitle()})`;
         this.getProject("Today").addTask(
-          new Task(
-            taskTitle,
-            task.getDescription(),
-            task.getDate(),
-            task.getStatus()
-          )
+          new Task(taskTitle, task.getDate(), task.getDoneStatus())
         );
       });
     });
@@ -68,12 +63,7 @@ export default class TodoList {
       weekTasks.forEach((task) => {
         const taskTitle = `${task.getTitle()} (${project.getTitle()})`;
         this.getProject("This Week").addTask(
-          new Task(
-            taskTitle,
-            task.getDescription(),
-            task.getDate(),
-            task.getStatus()
-          )
+          new Task(taskTitle, task.getDate(), task.getDoneStatus())
         );
       });
     });

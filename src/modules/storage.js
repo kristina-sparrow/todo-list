@@ -58,18 +58,20 @@ export default class Storage {
     Storage.saveTodoList(list);
   }
 
-  static editTaskDescription(projectTitle, taskTitle, newTaskDescription) {
-    const list = Storage.getTodoList();
-    list
-      .getProject(projectTitle)
-      .getTask(taskTitle)
-      .setDescription(newTaskDescription);
-    Storage.saveTodoList(list);
-  }
-
   static setTaskDate(projectTitle, taskTitle, newDueDate) {
     const list = Storage.getTodoList();
     list.getProject(projectTitle).getTask(taskTitle).setDate(newDueDate);
+    Storage.saveTodoList(list);
+  }
+
+  static getTaskStatus(projectTitle, taskTitle) {
+    const list = Storage.getTodoList();
+    return list.getProject(projectTitle).getTask(taskTitle).getDoneStatus();
+  }
+
+  static setTaskStatus(projectTitle, taskTitle, newStatus) {
+    const list = Storage.getTodoList();
+    list.getProject(projectTitle).getTask(taskTitle).setDoneStatus(newStatus);
     Storage.saveTodoList(list);
   }
 

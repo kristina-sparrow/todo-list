@@ -31,9 +31,7 @@ export default class UI {
     Storage.getTodoList()
       .getProject(projectTitle)
       .getTasks()
-      .forEach((task) =>
-        UI.createTask(task.title, task.description, task.date)
-      );
+      .forEach((task) => UI.createTask(task.title, task.date, task.doneStatus));
     if (projectTitle !== "Today" && projectTitle !== "This Week") {
       UI.initAddTaskButtons();
     }
@@ -58,14 +56,6 @@ export default class UI {
               id="input-add-task-title-popup"
               type="text"
             />
-          </div>
-          <div class="input-group">
-            <label for="input-add-task-description-popup">Description (Optional)</label>
-            <input
-            class="input-add-task-description-popup"
-            id="input-add-task-description-popup"
-            type="text"
-          />
           </div>
           <div class="add-task-popup-buttons">
             <button class="button-add-task-popup" id="button-add-task-popup">
@@ -94,16 +84,15 @@ export default class UI {
     UI.initProjectButtons();
   }
 
-  static createTask(title, description, dueDate) {
+  static createTask(title, dueDate, doneStatus) {
     const tasksList = document.getElementById("tasks-list");
     tasksList.innerHTML += `
-      <button class="button-task" data-task-button>
+      <button class="button-task ${doneStatus}" data-task-button>
         <div class="left-task-panel">
           <i class="far fa-circle"></i>
+          <i class="fa-solid fa-circle-check"></i>
           <p class="task-title">${title}</p>
           <input type="text" class="input-task-title" data-input-task-title>
-          <p class="task-description">${description}</p>
-          <input type="text" class="input-task-description" data-input-task-description>
         </div>
         <div class="right-task-panel">
           <p class="due-date" id="due-date">${dueDate}</p>
@@ -153,7 +142,6 @@ export default class UI {
     const taskButtons = document.querySelectorAll("[data-task-button]");
     taskButtons.forEach((button) => {
       UI.closeRenameInput(button);
-      UI.closeDescriptionInput(button);
       UI.closeSetDateInput(button);
     });
   }
@@ -288,17 +276,10 @@ export default class UI {
     const addTaskTitlePopupInput = document.getElementById(
       "input-add-task-title-popup"
     );
-    const addTaskDescriptionPopupInput = document.getElementById(
-      "input-add-task-description-popup"
-    );
     addTaskButton.addEventListener("click", UI.openAddTaskPopup);
     addTaskPopupButton.addEventListener("click", UI.addTask);
     cancelTaskPopupButton.addEventListener("click", UI.closeAddTaskPopup);
     addTaskTitlePopupInput.addEventListener(
-      "keypress",
-      UI.handleAddTaskPopupInput
-    );
-    addTaskDescriptionPopupInput.addEventListener(
       "keypress",
       UI.handleAddTaskPopupInput
     );
@@ -318,13 +299,9 @@ export default class UI {
     const addTaskTitleInput = document.getElementById(
       "input-add-task-title-popup"
     );
-    const addTaskDescriptionInput = document.getElementById(
-      "input-add-task-description-popup"
-    );
     addTaskPopup.classList.remove("active");
     addTaskButton.classList.remove("active");
     addTaskTitleInput.value = "";
-    addTaskDescriptionInput.value = "";
   }
 
   static addTask() {
@@ -333,10 +310,6 @@ export default class UI {
       "input-add-task-title-popup"
     );
     const taskTitle = addTaskTitlePopupInput.value;
-    const addTaskDescriptionPopupInput = document.getElementById(
-      "input-add-task-description-popup"
-    );
-    const taskDescription = addTaskDescriptionPopupInput.value;
     if (taskTitle === "") {
       alert("Task title can't be empty");
       return;
@@ -346,11 +319,8 @@ export default class UI {
       addTaskTitlePopupInput.value = "";
       return;
     }
-    Storage.addTask(
-      projectTitle,
-      new Task(taskTitle, taskDescription, "No date")
-    );
-    UI.createTask(taskTitle, taskDescription, "No date");
+    Storage.addTask(projectTitle, new Task(taskTitle, "No date", false));
+    UI.createTask(taskTitle, "No date", false);
     UI.closeAddTaskPopup();
   }
 
@@ -364,9 +334,6 @@ export default class UI {
     const taskTitleInputs = document.querySelectorAll(
       "[data-input-task-title]"
     );
-    const taskDescriptionInputs = document.querySelectorAll(
-      "[data-input-task-description]"
-    );
     const dueDateInputs = document.querySelectorAll("[data-input-due-date]");
     taskButtons.forEach((taskButton) =>
       taskButton.addEventListener("click", UI.handleTaskButton)
@@ -374,17 +341,17 @@ export default class UI {
     taskTitleInputs.forEach((taskTitleInput) =>
       taskTitleInput.addEventListener("keypress", UI.renameTask)
     );
-    taskDescriptionInputs.forEach((taskDescriptionInput) =>
-      taskDescriptionInput.addEventListener("keypress", UI.editTaskDescription)
-    );
     dueDateInputs.forEach((dueDateInput) =>
       dueDateInput.addEventListener("change", UI.setTaskDate)
     );
   }
 
   static handleTaskButton(e) {
-    if (e.target.classList.contains("fa-circle")) {
-      UI.setTaskCompleted(this);
+    if (
+      e.target.classList.contains("fa-circle") ||
+      e.target.classList.contains("fa-circle-check")
+    ) {
+      UI.toggleTaskCompleted(this);
       return;
     }
     if (e.target.classList.contains("fa-times")) {
@@ -395,28 +362,30 @@ export default class UI {
       UI.openRenameInput(this);
       return;
     }
-    if (e.target.classList.contains("task-description")) {
-      UI.openDescriptionInput(this);
-      return;
-    }
     if (e.target.classList.contains("due-date")) {
       UI.openSetDateInput(this);
     }
   }
 
-  static setTaskCompleted(taskButton) {
+  static toggleTaskCompleted(taskButton) {
     const projectTitle = document.getElementById("project-title").textContent;
-    const taskTitle = taskButton.children[0].children[1].textContent;
+    const taskTitle = taskButton.children[0].children[2].textContent;
     if (projectTitle === "Today" || projectTitle === "This Week") {
       const parentProjectTitle = taskTitle.split("(")[1].split(")")[0];
-      Storage.deleteTask(parentProjectTitle, taskTitle.split(" ")[0]);
+      const childTaskTitle = taskTitle.split(" ")[0];
+      const newStatus = !Storage.getTaskStatus(
+        parentProjectTitle,
+        childTaskTitle
+      );
+      Storage.setTaskStatus(parentProjectTitle, childTaskTitle, newStatus);
       if (projectTitle === "Today") {
         Storage.updateTodayProject();
       } else {
         Storage.updateWeekProject();
       }
     } else {
-      Storage.deleteTask(projectTitle, taskTitle);
+      const newStatus = !Storage.getTaskStatus(projectTitle, taskTitle);
+      Storage.setTaskStatus(projectTitle, taskTitle, newStatus);
     }
     UI.clearTasks();
     UI.loadTasks(projectTitle);
@@ -424,7 +393,7 @@ export default class UI {
 
   static deleteTask(taskButton) {
     const projectTitle = document.getElementById("project-title").textContent;
-    const taskTitle = taskButton.children[0].children[1].textContent;
+    const taskTitle = taskButton.children[0].children[2].textContent;
     if (projectTitle === "Today" || projectTitle === "This Week") {
       const mainProjectTitle = taskTitle.split("(")[1].split(")")[0];
       Storage.deleteTask(mainProjectTitle, taskTitle);
@@ -435,9 +404,9 @@ export default class UI {
   }
 
   static openRenameInput(taskButton) {
-    const taskTitlePara = taskButton.children[0].children[1];
+    const taskTitlePara = taskButton.children[0].children[2];
     let taskTitle = taskTitlePara.textContent;
-    const taskTitleInput = taskButton.children[0].children[2];
+    const taskTitleInput = taskButton.children[0].children[3];
     const projectTitle =
       taskButton.parentNode.parentNode.children[0].textContent;
     if (projectTitle === "Today" || projectTitle === "This Week") {
@@ -450,8 +419,8 @@ export default class UI {
   }
 
   static closeRenameInput(taskButton) {
-    const taskTitle = taskButton.children[0].children[1];
-    const taskTitleInput = taskButton.children[0].children[2];
+    const taskTitle = taskButton.children[0].children[2];
+    const taskTitleInput = taskButton.children[0].children[3];
     taskTitle.classList.remove("active");
     taskTitleInput.classList.remove("active");
     taskTitleInput.value = "";
@@ -488,46 +457,6 @@ export default class UI {
     UI.closeRenameInput(this.parentNode.parentNode);
   }
 
-  static openDescriptionInput(taskButton) {
-    const taskDescriptionPara = taskButton.children[0].children[3];
-    const taskDescription = taskDescriptionPara.textContent;
-    const taskDescriptionInput = taskButton.children[0].children[4];
-    UI.closeAllPopups();
-    taskDescriptionPara.classList.add("active");
-    taskDescriptionInput.classList.add("active");
-    taskDescriptionInput.value = taskDescription;
-  }
-
-  static closeDescriptionInput(taskButton) {
-    const taskDescription = taskButton.children[0].children[3];
-    const taskDescriptionInput = taskButton.children[0].children[4];
-    taskDescription.classList.remove("active");
-    taskDescriptionInput.classList.remove("active");
-    taskDescriptionInput.value = "";
-  }
-
-  static editTaskDescription(e) {
-    if (e.key !== "Enter") return;
-    const projectTitle = document.getElementById("project-title").textContent;
-    const taskTitle = this.parentNode.children[1].textContent;
-    const newTaskDescription = this.value;
-    if (projectTitle === "Today" || projectTitle === "This Week") {
-      const mainProjectTitle = taskTitle.split("(")[1].split(")")[0];
-      const mainTaskTitle = taskTitle.split(" ")[0];
-      Storage.editTaskDescription(projectTitle, taskTitle, newTaskDescription);
-      Storage.editTaskDescription(
-        mainProjectTitle,
-        mainTaskTitle,
-        newTaskDescription
-      );
-    } else {
-      Storage.editTaskDescription(projectTitle, taskTitle, newTaskDescription);
-    }
-    UI.clearTasks();
-    UI.loadTasks(projectTitle);
-    UI.closeDescriptionInput(this.parentNode.parentNode);
-  }
-
   static openSetDateInput(taskButton) {
     const dueDate = taskButton.children[1].children[0];
     const dueDateInput = taskButton.children[1].children[1];
@@ -546,7 +475,7 @@ export default class UI {
   static setTaskDate() {
     const taskButton = this.parentNode.parentNode;
     const projectTitle = document.getElementById("project-title").textContent;
-    const taskTitle = taskButton.children[0].children[1].textContent;
+    const taskTitle = taskButton.children[0].children[2].textContent;
     const newDueDate = format(new Date(this.value), "mm/dd/yyyy");
     if (projectTitle === "Today" || projectTitle === "This Week") {
       const mainProjectTitle = taskTitle.split("(")[1].split(")")[0];
