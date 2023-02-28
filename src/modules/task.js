@@ -30,8 +30,8 @@ export default class Task {
   }
 
   getDateFormatted = () => {
-    const day = this.date.split("/")[0];
-    const month = this.date.split("/")[1];
+    const month = this.date.split("/")[0];
+    const day = this.date.split("/")[1];
     const year = this.date.split("/")[2];
     return `${month}/${day}/${year}`;
   };

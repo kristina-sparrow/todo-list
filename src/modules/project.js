@@ -24,7 +24,7 @@ export default class Project {
   }
 
   getTasks() {
-    return this.tasks;
+    return this.tasks.sort((a, b) => new Date(a.date) - new Date(b.date));
   }
 
   setTasks(newTasks) {

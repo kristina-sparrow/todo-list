@@ -28,11 +28,16 @@ export default class UI {
   }
 
   static loadTasks(projectTitle) {
+    UI.clearTasks();
     Storage.getTodoList()
       .getProject(projectTitle)
       .getTasks()
       .forEach((task) => UI.createTask(task.title, task.date, task.doneStatus));
-    if (projectTitle !== "Today" && projectTitle !== "This Week") {
+    if (
+      projectTitle !== "All" &&
+      projectTitle !== "Today" &&
+      projectTitle !== "This Week"
+    ) {
       UI.initAddTaskButtons();
     }
   }
@@ -42,7 +47,11 @@ export default class UI {
     projectPreview.innerHTML = `
         <h1 id="project-title">${projectTitle}</h1>
         <div class="tasks-list" id="tasks-list"></div>`;
-    if (projectTitle !== "Today" && projectTitle !== "This Week") {
+    if (
+      projectTitle !== "All" &&
+      projectTitle !== "Today" &&
+      projectTitle !== "This Week"
+    ) {
       projectPreview.innerHTML += `
         <button class="button-add-task" id="button-add-task">
           <i class="fas fa-plus"></i>
@@ -120,6 +129,7 @@ export default class UI {
     projectsList.textContent = "";
   }
 
+  // NEED TO UPDATE TO CLEAR TASKS FOR SPECIFIC PROJECT TITLE FOR DELETE TASK FUNCTION TO WORK
   static clearTasks() {
     const tasksList = document.getElementById("tasks-list");
     tasksList.textContent = "";
@@ -225,6 +235,7 @@ export default class UI {
   }
 
   static openAllTasks() {
+    Storage.updateAllProject();
     UI.openProject("All", this);
   }
 
@@ -370,9 +381,13 @@ export default class UI {
   static toggleTaskCompleted(taskButton) {
     const projectTitle = document.getElementById("project-title").textContent;
     const taskTitle = taskButton.children[0].children[2].textContent;
-    if (projectTitle === "Today" || projectTitle === "This Week") {
+    if (
+      projectTitle === "All" ||
+      projectTitle === "Today" ||
+      projectTitle === "This Week"
+    ) {
       const parentProjectTitle = taskTitle.split("(")[1].split(")")[0];
-      const childTaskTitle = taskTitle.split(" ")[0];
+      const childTaskTitle = taskTitle.split(" (")[0];
       const newStatus = !Storage.getTaskStatus(
         parentProjectTitle,
         childTaskTitle
@@ -380,8 +395,10 @@ export default class UI {
       Storage.setTaskStatus(parentProjectTitle, childTaskTitle, newStatus);
       if (projectTitle === "Today") {
         Storage.updateTodayProject();
-      } else {
+      } else if (projectTitle === "This Week") {
         Storage.updateWeekProject();
+      } else {
+        Storage.updateAllProject();
       }
     } else {
       const newStatus = !Storage.getTaskStatus(projectTitle, taskTitle);
@@ -394,11 +411,25 @@ export default class UI {
   static deleteTask(taskButton) {
     const projectTitle = document.getElementById("project-title").textContent;
     const taskTitle = taskButton.children[0].children[2].textContent;
-    if (projectTitle === "Today" || projectTitle === "This Week") {
+    if (
+      projectTitle === "All" ||
+      projectTitle === "Today" ||
+      projectTitle === "This Week"
+    ) {
       const mainProjectTitle = taskTitle.split("(")[1].split(")")[0];
-      Storage.deleteTask(mainProjectTitle, taskTitle);
+      const mainTaskTitle = taskTitle.split(" (")[0];
+      Storage.deleteTask(projectTitle, taskTitle);
+      Storage.deleteTask(mainProjectTitle, mainTaskTitle);
+      if (projectTitle === "Today") {
+        Storage.updateTodayProject();
+      } else if (projectTitle === "This Week") {
+        Storage.updateWeekProject();
+      } else {
+        Storage.updateAllProject();
+      }
+    } else {
+      Storage.deleteTask(projectTitle, taskTitle);
     }
-    Storage.deleteTask(projectTitle, taskTitle);
     UI.clearTasks();
     UI.loadTasks(projectTitle);
   }
@@ -409,7 +440,11 @@ export default class UI {
     const taskTitleInput = taskButton.children[0].children[3];
     const projectTitle =
       taskButton.parentNode.parentNode.children[0].textContent;
-    if (projectTitle === "Today" || projectTitle === "This Week") {
+    if (
+      projectTitle === "All" ||
+      projectTitle === "Today" ||
+      projectTitle === "This Week"
+    ) {
       [taskTitle] = taskTitle.split(" (");
     }
     UI.closeAllPopups();
@@ -440,7 +475,11 @@ export default class UI {
       alert("Task titles must be different");
       return;
     }
-    if (projectTitle === "Today" || projectTitle === "This Week") {
+    if (
+      projectTitle === "All" ||
+      projectTitle === "Today" ||
+      projectTitle === "This Week"
+    ) {
       const mainProjectTitle = taskTitle.split("(")[1].split(")")[0];
       const mainTaskTitle = taskTitle.split(" ")[0];
       Storage.renameTask(
@@ -476,16 +515,25 @@ export default class UI {
     const taskButton = this.parentNode.parentNode;
     const projectTitle = document.getElementById("project-title").textContent;
     const taskTitle = taskButton.children[0].children[2].textContent;
-    const newDueDate = format(new Date(this.value), "mm/dd/yyyy");
-    if (projectTitle === "Today" || projectTitle === "This Week") {
+    const newDueDate = format(
+      new Date(new Date(this.value).valueOf() + 1000 * 60 * 60 * 24),
+      "MM/dd/yyyy"
+    );
+    if (
+      projectTitle === "All" ||
+      projectTitle === "Today" ||
+      projectTitle === "This Week"
+    ) {
       const mainProjectTitle = taskTitle.split("(")[1].split(")")[0];
       const mainTaskTitle = taskTitle.split(" (")[0];
       Storage.setTaskDate(projectTitle, taskTitle, newDueDate);
       Storage.setTaskDate(mainProjectTitle, mainTaskTitle, newDueDate);
       if (projectTitle === "Today") {
         Storage.updateTodayProject();
-      } else {
+      } else if (projectTitle === "This Week") {
         Storage.updateWeekProject();
+      } else {
+        Storage.updateAllProject();
       }
     } else {
       Storage.setTaskDate(projectTitle, taskTitle, newDueDate);

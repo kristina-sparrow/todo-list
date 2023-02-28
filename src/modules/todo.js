@@ -42,7 +42,11 @@ export default class TodoList {
   updateTodayProject() {
     this.getProject("Today").tasks = [];
     this.projects.forEach((project) => {
-      if (project.getTitle() === "Today" || project.getTitle() === "This Week")
+      if (
+        project.getTitle() === "All" ||
+        project.getTitle() === "Today" ||
+        project.getTitle() === "This Week"
+      )
         return;
       const todayTasks = project.getTasksToday();
       todayTasks.forEach((task) => {
@@ -57,7 +61,11 @@ export default class TodoList {
   updateWeekProject() {
     this.getProject("This Week").tasks = [];
     this.projects.forEach((project) => {
-      if (project.getTitle() === "Today" || project.getTitle() === "This Week")
+      if (
+        project.getTitle() === "All" ||
+        project.getTitle() === "Today" ||
+        project.getTitle() === "This Week"
+      )
         return;
       const weekTasks = project.getTasksThisWeek();
       weekTasks.forEach((task) => {
@@ -78,5 +86,24 @@ export default class TodoList {
           )
         )
     );
+  }
+
+  updateAllProject() {
+    this.getProject("All").tasks = [];
+    this.projects.forEach((project) => {
+      if (
+        project.getTitle() === "All" ||
+        project.getTitle() === "Today" ||
+        project.getTitle() === "This Week"
+      )
+        return;
+      const allTasks = project.getTasks();
+      allTasks.forEach((task) => {
+        const taskTitle = `${task.getTitle()} (${project.getTitle()})`;
+        this.getProject("All").addTask(
+          new Task(taskTitle, task.getDate(), task.getDoneStatus())
+        );
+      });
+    });
   }
 }

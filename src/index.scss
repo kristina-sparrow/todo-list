@@ -36,7 +36,7 @@ html {
 
 .main {
   width: 100vw;
-  height: 100vh;
+  min-height: 100vh;
   display: flex;
   flex-direction: row;
   justify-content: flex-start;
@@ -256,7 +256,7 @@ button {
       font-size: 24px;
       cursor: pointer;
     }
-    .task-content {
+    .task-title {
       cursor: pointer;
       &.active {
         display: none;
@@ -271,19 +271,7 @@ button {
       color: inherit;
       font-family: inherit;
       &.active {
-        display: none;
-      }
-    }
-    .input-task-description {
-      display: none;
-      height: 24px;
-      padding: 5px;
-      border: 1px solid #555;
-      background-color: $clr-light;
-      color: inherit;
-      font-family: inherit;
-      &.active {
-        display: none;
+        display: block;
       }
     }
   }
