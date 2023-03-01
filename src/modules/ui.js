@@ -46,6 +46,7 @@ export default class UI {
     const projectPreview = document.getElementById("project-preview");
     projectPreview.innerHTML = `
         <h1 id="project-title">${projectTitle}</h1>
+        <div class="project-preview__divider"></div>
         <div class="tasks-list" id="tasks-list"></div>`;
     if (
       projectTitle !== "All" &&
@@ -58,25 +59,22 @@ export default class UI {
           Add Task
         </button>
         <div class="add-task-popup" id="add-task-popup">
-          <div class="input-group"> 
-            <label for="input-add-task-title-popup">Task Name</label>
-            <input
-              class="input-add-task-title-popup"
-              id="input-add-task-title-popup"
-              type="text"
-            />
-          </div>
+          <input
+            class="input-add-task-title-popup"
+            id="input-add-task-title-popup"
+            type="text"
+            placeholder="Describe task..."
+          />
           <div class="add-task-popup-buttons">
-            <button class="button-add-task-popup" id="button-add-task-popup">
-              Add
-            </button>
-            <button
-              class="button-cancel-task-popup"
-              id="button-cancel-task-popup"
-            >
-              Cancel
-            </button>
-          </div>
+          <button class="button-add-task-popup" id="button-add-task-popup">
+            Add
+          </button>
+          <button
+            class="button-cancel-task-popup"
+            id="button-cancel-task-popup"
+          >
+            Cancel
+          </button>
         </div>`;
     }
     UI.loadTasks(projectTitle);
