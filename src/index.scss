@@ -2,7 +2,7 @@
 @import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@200;300;400;500;600;700;800&display=swap");
 $clr-bg: #ffffff;
 $clr-light: #fff;
-$clr-grayL: #eeeeee;
+$clr-grayL: #f7f7f7;
 $clr-grayM: #e0e0e0;
 $clr-grayD: #b0b0b0;
 $clr-dark: #41404b;
@@ -55,7 +55,14 @@ button {
   align-items: center;
   justify-content: center;
   gap: 8px;
-  background-color: $clr-dark;
+  background: linear-gradient(
+    90deg,
+    $clr-dark 0%,
+    $clr-dark 20%,
+    $clr-blue 50%,
+    $clr-dark 80%,
+    $clr-dark 100%
+  );
   color: $clr-light;
   padding: 15px;
   box-shadow: rgba(14, 30, 37, 0.12) 0px 2px 4px 0px,
@@ -250,7 +257,7 @@ button {
   background-color: inherit;
   color: $clr-dark;
   &:hover {
-    background-color: $clr-greenL;
+    background-color: $clr-grayL;
     .right-task-panel i {
       visibility: visible;
     }
@@ -296,9 +303,9 @@ button {
     }
     .input-task-title {
       display: none;
-      height: 24px;
-      padding: 5px;
       border: 1px solid #555;
+      padding: 3px;
+      width: 300px;
       background-color: $clr-light;
       color: inherit;
       font-family: inherit;

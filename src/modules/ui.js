@@ -479,7 +479,7 @@ export default class UI {
       projectTitle === "This Week"
     ) {
       const mainProjectTitle = taskTitle.split("(")[1].split(")")[0];
-      const mainTaskTitle = taskTitle.split(" ")[0];
+      const mainTaskTitle = taskTitle.split(" (")[0];
       Storage.renameTask(
         projectTitle,
         taskTitle,
